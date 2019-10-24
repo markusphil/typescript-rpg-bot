@@ -1,19 +1,49 @@
 import * as dotenv from 'dotenv';
 dotenv.config();
 
-import * as Discord from 'discord.js';
+import { Client, Collection, Channel, TextChannel, RichEmbed } from 'discord.js';
+import { AppDAO } from './database/dao';
+import { RaceRepo, race, races } from './database/races';
 
-const client = new Discord.Client();
+const dao = new AppDAO('../database.sqlite3');
+const racesRepo = new RaceRepo(dao);
 
-let rpgChannel: Discord.TextChannel;
-
-client.once('ready', () => {
-  console.log('ready!');
-  const targetChannel: Discord.Channel | undefined = client.channels.get('627866917394317334');
-  if (targetChannel instanceof Discord.TextChannel) rpgChannel = targetChannel;
-  if (targetChannel) {
-    rpgChannel.send('I am awake');
+class Bot {
+  races: Collection<number, race>;
+  client: Client;
+  logChannel?: TextChannel;
+  constructor() {
+    this.client = new Client();
+    this.races = new Collection();
   }
+}
+
+const bot = new Bot();
+
+bot.client.once('ready', () => {
+  console.log('ready!');
+  const targetChannel: Channel | undefined = bot.client.channels.get('627866917394317334');
+  if (targetChannel instanceof TextChannel) bot.logChannel = targetChannel;
+  if (bot.logChannel) {
+    bot.logChannel.send('I am awake');
+  }
+  racesRepo
+    .getAll()
+    .then(res => {
+      res.forEach(race => {
+        bot.races.set(race.id, race);
+      });
+      if (bot.logChannel) {
+        const randomRace = bot.races.random();
+        const message = new RichEmbed()
+          .setColor(0xde1738)
+          .setTitle(randomRace.name)
+          .setDescription(randomRace.description);
+
+        bot.logChannel.send(message);
+      }
+    })
+    .catch(err => console.error(err));
 });
 
-client.login(process.env.BOT_TOKEN);
+bot.client.login(process.env.BOT_TOKEN);
