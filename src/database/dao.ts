@@ -13,7 +13,7 @@ export class AppDAO implements DaoInterface {
     });
   }
 
-  run(sql: string, params: string[] = []) {
+  run(sql: string, params: Array<string | number> = []) {
     return new Promise((resolve, reject) => {
       this.db.run(sql, params, err => {
         if (err) {
@@ -58,7 +58,7 @@ export class AppDAO implements DaoInterface {
 
 export interface DaoInterface {
   db: sqlite3.Database;
-  run(sql: string, params?: string[]): Promise<any>;
-  get(sql: string, params?: string[]): Promise<any>;
-  all(sql: string, params?: string[]): Promise<any>;
+  run(sql: string, params?: Array<string | number>): Promise<any>;
+  get(sql: string, params?: Array<string | number>): Promise<any>;
+  all(sql: string, params?: Array<string | number>): Promise<any>;
 }

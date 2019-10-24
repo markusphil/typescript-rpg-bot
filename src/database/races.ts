@@ -26,12 +26,16 @@ export class RaceRepo {
     ]);
   }
 
+  getById(id: number): Promise<race> {
+    return this.dao.get(`SELECT * FROM races WHERE id = ?`, [id]);
+  }
+
   getAll(): Promise<races> {
     return this.dao.all(`SELECT * FROM races`);
   }
 
   deleteAll() {
-    console.warn('deleting all entries');
+    console.warn('deleting all races');
     return this.dao.run(`DELETE FROM races`);
   }
 }
