@@ -11,7 +11,7 @@ export class PlayerRepo {
         CREATE TABLE IF NOT EXISTS players (
           id INTEGER PRIMARY KEY AUTOINCREMENT,
           name TEXT,
-          discordId INTEGER,
+          discordId TEXT,
           raceId INTEGER,
           CONSTRAINT player_fk_raceId FOREIGN KEY (raceId)
           REFERENCES race(id) ON UPDATE CASCADE ON DELETE CASCADE
@@ -21,6 +21,7 @@ export class PlayerRepo {
   }
 
   add(name: string, discordId: string, raceId: number) {
+    console.log(discordId);
     // silent ignores might not be the best solution since I want to show a message only if a new player was added
     return this.dao.run('INSERT OR IGNORE INTO players (name, discordId, raceId) VALUES (?, ?, ?)', [
       name,
@@ -32,7 +33,7 @@ export class PlayerRepo {
   getAll(): Promise<players> {
     return this.dao.all(`SELECT * FROM players`);
   }
-  getById(discordId: number): Promise<player> {
+  getById(discordId: string): Promise<player> {
     return this.dao.get(`SELECT * FROM players WHERE discordId = ?`, [discordId]);
   }
 
@@ -46,5 +47,6 @@ export interface players extends Array<player> {}
 export interface player {
   id: number;
   name: string;
+  discordId: string;
   raceId: number;
 }
