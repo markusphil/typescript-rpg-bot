@@ -1,16 +1,35 @@
-import { racesInfo, singleRaceInfo } from './races';
+import { playerInfo } from './playerInfo';
+import { actionsInfo, helpInfo } from './commands';
+
+import { racesInfo, singleRaceInfo } from './raceInfo';
 import { command } from '../index';
 
 export const infos: Array<command> = [
   {
     name: 'races',
-    description: 'list all available races',
+    description: 'lists all available races',
     execute: racesInfo,
   },
   {
     name: 'race',
-    usage: '<?racename> if no racename is choosen, returns a random race',
-    description: 'provides info about a specific race',
+    usage: '<?racename>',
+    description: 'provides info about a specific race. If no racename is set, returns a random race info',
     execute: singleRaceInfo,
+  },
+  {
+    name: 'actions',
+    description: 'lists all available action commands',
+    execute: actionsInfo,
+  },
+  {
+    name: 'help',
+    aliases: ['info', '?'],
+    description: 'lists all available info commands',
+    execute: helpInfo,
+  },
+  {
+    name: 'players',
+    description: 'lists all registered players',
+    execute: playerInfo,
   },
 ];

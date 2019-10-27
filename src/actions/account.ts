@@ -1,14 +1,12 @@
-import { commandExecute, Bot } from './../index';
+import { commandExecute, bot } from './../index';
 import { GuildMember } from 'discord.js';
 
-export const joinByCommand: commandExecute = (args, message, bot) => {
-  addPlayer(message.member, bot);
+export const joinByCommand: commandExecute = (args, message) => {
+  addPlayer(message.member);
 };
 
-export const addPlayer = (user: GuildMember, bot: Bot) => {
+export const addPlayer = (user: GuildMember) => {
   const player = bot.players.get(user.id);
-  console.log(bot.players.entries());
-  console.log(user.id);
   if (player) {
     user.send(`Hey ${user.displayName}, you already joined!`);
     return;

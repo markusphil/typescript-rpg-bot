@@ -46,4 +46,5 @@ export interface race {
   name: string;
   description: string;
   message: string;
+  name_lc?: string;
 }

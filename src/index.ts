@@ -59,7 +59,7 @@ bot.racesRepo
   .getAll()
   .then(res => {
     res.forEach(race => {
-      bot.races.set(race.id, race);
+      bot.races.set(race.id, { ...race, name_lc: race.name.toLowerCase() });
     });
   })
   .catch(err => console.error(err));
@@ -82,7 +82,7 @@ bot.client.login(process.env.BOT_TOKEN);
 
 // eventhandlers
 bot.client.on('guildMemberAdd', member => {
-  addPlayer(member, bot);
+  addPlayer(member);
 });
 
 bot.client.on('message', message => {
@@ -107,23 +107,27 @@ bot.client.on('message', message => {
   // separate info and actions
   switch (commandType) {
     case 'action':
-      const action = bot.actions.get(commandName);
-      if (action) {
-        action.execute(args, message, bot);
-      } else message.reply(errMessage.setDescription('unknown action'));
+      const action =
+        bot.actions.get(commandName) ||
+        bot.actions.find(act => (act.aliases ? act.aliases.includes(commandName) : false));
+      if (!action) {
+        message.reply(errMessage.setDescription('unknown action'));
+      } else if (action.guildOnly && message.channel.type !== 'text') {
+        message.reply(errMessage.setDescription('This action can only be performed in a Guild Textchannel'));
+      } else {
+        action.execute(args, message);
+      }
       break;
     case 'info':
-      const info = bot.infos.get(commandName);
+      const info =
+        bot.infos.get(commandName) || bot.infos.find(inf => (inf.aliases ? inf.aliases.includes(commandName) : false));
       if (info) {
-        info.execute(args, message, bot);
-      } else message.reply(errMessage.setDescription("this help command dosn't exist!"));
+        info.execute(args, message);
+      } else {
+        message.reply(errMessage.setDescription("this info command dosn't exist!"));
+        bot.infos.get('help')!.execute(args, message);
+      }
       break;
-  }
-
-  if (commandName === 'list') {
-    bot.playerRepo.getAll().then(res => {
-      bot.logChannel.send(JSON.stringify(res));
-    });
   }
 });
 
@@ -131,9 +135,12 @@ export interface command {
   name: string;
   description: string;
   usage?: string;
+  aliases?: string[];
+  requireArgs?: boolean;
+  guildOnly?: boolean;
   execute: commandExecute;
 }
 
 export interface commandExecute {
-  (args: string[], message: Message, bot: Bot): void;
+  (args: string[], message: Message): void;
 }
