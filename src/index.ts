@@ -67,6 +67,7 @@ bot.racesRepo
 bot.playerRepo
   .getAll()
   .then(res => {
+    console.log(res);
     res.forEach(player => {
       bot.players.set(player.discordId, player);
     });

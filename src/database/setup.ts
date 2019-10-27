@@ -17,7 +17,7 @@ function setup() {
     .then(() => {
       return Promise.all(
         raceData.map(race => {
-          return races.add(race.name, race.description, race.message);
+          return races.add(race.name, race.name_s, race.description, race.message);
         })
       );
     })

@@ -11,6 +11,7 @@ export class RaceRepo {
         CREATE TABLE IF NOT EXISTS races (
           id INTEGER PRIMARY KEY AUTOINCREMENT,
           name TEXT,
+          name_s TEXT,
           description TEXT,
           message Text
           )
@@ -18,9 +19,10 @@ export class RaceRepo {
     return this.dao.run(sql);
   }
 
-  add(name: string, description: string, message: string) {
-    return this.dao.run('INSERT INTO races (name, description, message) VALUES (?, ?, ?)', [
+  add(name: string, name_s: string, description: string, message: string) {
+    return this.dao.run('INSERT INTO races (name, name_s, description, message) VALUES (?, ?, ?, ?)', [
       name,
+      name_s,
       description,
       message,
     ]);
@@ -44,7 +46,8 @@ export interface races extends Array<race> {}
 export interface race {
   id: number;
   name: string;
+  name_lc?: string;
+  name_s: string;
   description: string;
   message: string;
-  name_lc?: string;
 }

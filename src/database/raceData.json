@@ -1,16 +1,19 @@
 [
   {
     "name": "Orks",
+    "name_s": "Ork",
     "description": "Orks are stronger and tougher than most other races which makes them dangerous warriors.",
     "message": "Born in the harsh desert of Khazak your skin not only grow more resistent to the sun..."
   },
   {
     "name": "Elves",
+    "name_s": "Elf",
     "description": "Elves are known to be superior to other races regarding intelligence and agility.",
     "message": "Spending all your life in the forest within a high culture you've become well educated..."
   },
   {
     "name": "Humans",
+    "name_s": "Human",
     "description": "Humans are.. well.. pretty usual.",
     "message": "Spending most of your days on the streets of Starkeep you learned some different things - but haven't gotten really god in any of them..."
   }

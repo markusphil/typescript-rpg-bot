@@ -1,3 +1,4 @@
+import { race } from './races';
 import { DaoInterface } from './dao';
 
 export class PlayerRepo {
@@ -31,7 +32,9 @@ export class PlayerRepo {
   }
 
   getAll(): Promise<players> {
-    return this.dao.all(`SELECT * FROM players`);
+    return this.dao.all(
+      `SELECT P.id, P.name, P.discordId, P.raceId, R.name_s AS race FROM [players] P JOIN races R ON P.raceId = R.id`
+    );
   }
   getById(discordId: string): Promise<player> {
     return this.dao.get(`SELECT * FROM players WHERE discordId = ?`, [discordId]);
@@ -49,4 +52,5 @@ export interface player {
   name: string;
   discordId: string;
   raceId: number;
+  race: string;
 }
