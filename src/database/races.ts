@@ -46,7 +46,6 @@ export interface races extends Array<race> {}
 export interface race {
   id: number;
   name: string;
-  name_lc?: string;
   name_s: string;
   description: string;
   message: string;

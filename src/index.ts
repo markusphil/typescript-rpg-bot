@@ -60,7 +60,7 @@ bot.racesRepo
   .getAll()
   .then(res => {
     res.forEach(race => {
-      bot.races.set(race.id, { ...race, name_lc: race.name.toLowerCase() });
+      bot.races.set(race.id, race);
     });
   })
   .catch(err => console.error(err));
@@ -68,7 +68,6 @@ bot.racesRepo
 bot.playerRepo
   .getAll()
   .then(res => {
-    console.log(res);
     res.forEach(player => {
       bot.players.set(player.discordId, player);
     });
