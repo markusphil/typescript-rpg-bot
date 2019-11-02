@@ -1,3 +1,4 @@
+import { sendError } from './../utility/error';
 import { RichEmbed } from 'discord.js';
 import { bot, commandExecute } from '../index';
 import { infoColor } from '../config.json';
@@ -17,7 +18,8 @@ export const singleRaceInfo: commandExecute = (args, message) => {
     if (race) {
       embed.setTitle(race.name).setDescription(race.description);
     } else {
-      embed.setTitle('Error!').setDescription(`race "${args[0]}" not found`);
+      sendError(`race "${args[0]}" not found`, message);
+      return;
     }
   } else {
     randomRace(embed);

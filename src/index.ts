@@ -1,3 +1,4 @@
+import { sendError } from './utility/error';
 import { addPlayer } from './actions/account';
 import { actions } from './actions/actions';
 import { infos } from './infos/infos';
@@ -103,8 +104,6 @@ bot.client.on('message', message => {
   }
   const commandName = args.shift()!.toLowerCase();
 
-  const errMessage = new RichEmbed().setColor(0xe04050).setTitle('Error');
-
   // separate info and actions
   switch (commandType) {
     case 'action':
@@ -112,9 +111,9 @@ bot.client.on('message', message => {
         bot.actions.get(commandName) ||
         bot.actions.find(act => (act.aliases ? act.aliases.includes(commandName) : false));
       if (!action) {
-        message.reply(errMessage.setDescription('unknown action'));
+        sendError('unknown action', message);
       } else if (action.guildOnly && message.channel.type !== 'text') {
-        message.reply(errMessage.setDescription('This action can only be performed in a Guild Textchannel'));
+        sendError('This action can only be performed in a Guild Textchannel', message);
       } else {
         action.execute(args, message);
       }
@@ -125,7 +124,7 @@ bot.client.on('message', message => {
       if (info) {
         info.execute(args, message);
       } else {
-        message.reply(errMessage.setDescription("this info command dosn't exist!"));
+        sendError("this info command dosn't exist!", message);
         bot.infos.get('help')!.execute(args, message);
       }
       break;
