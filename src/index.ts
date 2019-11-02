@@ -59,6 +59,7 @@ bot.client.once('ready', () => {
 bot.racesRepo
   .getAll()
   .then(res => {
+    console.log(res);
     res.forEach(race => {
       bot.races.set(race.id, race);
     });
@@ -68,6 +69,7 @@ bot.racesRepo
 bot.playerRepo
   .getAll()
   .then(res => {
+    console.log(res);
     res.forEach(player => {
       bot.players.set(player.discordId, player);
     });

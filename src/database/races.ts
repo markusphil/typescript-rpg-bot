@@ -13,19 +13,30 @@ export class RaceRepo {
           name TEXT,
           name_s TEXT,
           description TEXT,
-          message Text
+          message Text,
+          base_str INTEGER,
+          base_dex INTEGER,
+          base_int INTEGER,
+          base_lck INTEGER
           )
           `;
     return this.dao.run(sql);
   }
 
-  add(name: string, name_s: string, description: string, message: string) {
-    return this.dao.run('INSERT INTO races (name, name_s, description, message) VALUES (?, ?, ?, ?)', [
-      name,
-      name_s,
-      description,
-      message,
-    ]);
+  add(
+    name: string,
+    name_s: string,
+    description: string,
+    message: string,
+    strength: number,
+    dexterity: number,
+    intelligence: number,
+    luck: number
+  ) {
+    return this.dao.run(
+      'INSERT INTO races (name, name_s, description, message, base_str, base_dex, base_int, base_lck) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
+      [name, name_s, description, message, strength, dexterity, intelligence, luck]
+    );
   }
 
   getById(id: number): Promise<race> {
@@ -49,4 +60,8 @@ export interface race {
   name_s: string;
   description: string;
   message: string;
+  base_str: number;
+  base_dex: number;
+  base_int: number;
+  base_lck: number;
 }

@@ -2,19 +2,31 @@
   {
     "name": "Orks",
     "name_s": "Ork",
-    "description": "Orks are stronger and tougher than most other races which makes them dangerous warriors.",
-    "message": "Born in the harsh desert of Khazak your skin not only grow more resistent to the sun..."
+    "description": "Orks are stronger and tougher than most other races which makes them dangerous warriors... They're not the smartest though!",
+    "message": "Born in the harsh desert of Khazak your skin not only grow more resistent to the sun...",
+    "strength": 4,
+    "dexterity": 2,
+    "intelligence": 2,
+    "luck": 2
   },
   {
     "name": "Elves",
     "name_s": "Elf",
     "description": "Elves are known to be superior to other races regarding intelligence and agility.",
-    "message": "Spending all your life in the forest within a high culture you've become well educated..."
+    "message": "Spending all your life in the forest within a high culture you've become well educated...",
+    "strength": 2,
+    "dexterity": 4,
+    "intelligence": 3,
+    "luck": 1
   },
   {
     "name": "Humans",
     "name_s": "Human",
     "description": "Humans are.. well.. pretty usual.",
-    "message": "Spending most of your days on the streets of Starkeep you learned some different things - but haven't gotten really god in any of them..."
+    "message": "Spending most of your days on the streets of Starkeep you learned some different things - but haven't gotten really god in any of them...",
+    "strength": 3,
+    "dexterity": 2,
+    "intelligence": 3,
+    "luck": 2
   }
 ]

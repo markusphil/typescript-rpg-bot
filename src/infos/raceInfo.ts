@@ -17,7 +17,13 @@ export const singleRaceInfo: commandExecute = (args, message) => {
   if (args.length > 0) {
     const race = bot.races.find(race => race.name === capitalize(args[0]) || race.name_s === capitalize(args[0]));
     if (race) {
-      embed.setTitle(race.name).setDescription(race.description);
+      embed
+        .setTitle(race.name)
+        .setDescription(race.description)
+        .addField(
+          'Attributes',
+          `Strength: ${race.base_str}\n Dexterity: ${race.base_dex}\n Intelligence: ${race.base_int}\n Luck: ${race.base_lck}`
+        );
     } else {
       sendError(`race "${args[0]}" not found`, message);
       return;
