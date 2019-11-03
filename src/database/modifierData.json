@@ -1,0 +1,38 @@
+[
+  {
+    "name": "normal",
+    "message": "you're so usual it is anoying!",
+    "strengthBonus": 0,
+    "dexterityBonus": 0,
+    "intelligenceBonus": 0,
+    "luckBonus": 0,
+    "strengthMalus": 0,
+    "dexterityMalus": 0,
+    "intelligenceMalus": 0,
+    "luckMalus": 0
+  },
+  {
+    "name": "clumsy",
+    "message": "You're known to be a little clumsy, so better keep your hands of that bow!",
+    "strengthBonus": 0,
+    "dexterityBonus": 0,
+    "intelligenceBonus": 0,
+    "luckBonus": 1,
+    "strengthMalus": 0,
+    "dexterityMalus": 1,
+    "intelligenceMalus": 0,
+    "luckMalus": 0
+  },
+  {
+    "name": "furious",
+    "message": "It seems you have a little problems managing your anger, which makes you hit harder but prevents you from keeping a cold mind",
+    "strengthBonus": 1,
+    "dexterityBonus": 0,
+    "intelligenceBonus": 0,
+    "luckBonus": 0,
+    "strengthMalus": 0,
+    "dexterityMalus": 0,
+    "intelligenceMalus": 1,
+    "luckMalus": 0
+  }
+]

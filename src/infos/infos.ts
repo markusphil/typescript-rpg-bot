@@ -1,3 +1,4 @@
+import { modifierInfo } from './modifierInfo';
 import { playerInfo, activePlayerInfo } from './playerInfo';
 import { actionsInfo, helpInfo } from './commands';
 import { racesInfo, singleRaceInfo } from './raceInfo';
@@ -30,6 +31,11 @@ export const infos: Array<command> = [
     name: 'players',
     description: 'lists all registered players',
     execute: playerInfo,
+  },
+  {
+    name: 'modifiers',
+    description: 'lists all existing modifierss',
+    execute: modifierInfo,
   },
   {
     name: 'status',

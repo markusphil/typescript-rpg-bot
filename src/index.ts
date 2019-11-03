@@ -9,34 +9,37 @@ import { logChannelId } from './config.json';
 import { Client, Collection, TextChannel, RichEmbed, GuildMember, Message } from 'discord.js';
 
 import { AppDAO } from './database/dao';
-import { RaceRepo, race, races } from './database/races';
+import { RaceRepo, race } from './database/races';
 import { PlayerRepo, player } from './database/players';
+import { modifier, ModifierRepo } from './database/modifiers';
 
 const dao = new AppDAO('./database.sqlite3');
 
 export class Bot {
   client: Client;
   logChannel!: TextChannel;
+
   races: Collection<number, race>;
   players: Collection<string, player>;
+  modifiers: Collection<number, modifier>;
+
   actions: Collection<string, command>;
   infos: Collection<string, command>;
 
   //database
   racesRepo = new RaceRepo(dao);
   playerRepo = new PlayerRepo(dao);
+  modifierRepo = new ModifierRepo(dao);
 
   constructor() {
     this.client = new Client();
 
     this.races = new Collection();
     this.players = new Collection();
+    this.modifiers = new Collection();
 
     this.actions = new Collection();
     this.infos = new Collection();
-
-    this.racesRepo = new RaceRepo(dao);
-    this.playerRepo = new PlayerRepo(dao);
   }
 }
 
@@ -59,7 +62,6 @@ bot.client.once('ready', () => {
 bot.racesRepo
   .getAll()
   .then(res => {
-    console.log(res);
     res.forEach(race => {
       bot.races.set(race.id, race);
     });
@@ -69,9 +71,17 @@ bot.racesRepo
 bot.playerRepo
   .getAll()
   .then(res => {
-    console.log(res);
     res.forEach(player => {
       bot.players.set(player.discordId, player);
+    });
+  })
+  .catch(err => console.error(err));
+
+bot.modifierRepo
+  .getAll()
+  .then(res => {
+    res.forEach(mod => {
+      bot.modifiers.set(mod.id, mod);
     });
   })
   .catch(err => console.error(err));

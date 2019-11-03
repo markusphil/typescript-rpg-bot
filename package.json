@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "ts-node-dev --respawn ./src/index.ts",
-    "dbdev": "ts-node-dev --respawn ./src/database/setup.ts",
+    "dbdev": "ts-node-dev ./src/database/setup.ts",
     "dbsetup": "node ./dist/database/setup.js",
     "start": "node ./dist/index.js",
     "build": "tsc"
