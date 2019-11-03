@@ -14,6 +14,7 @@ export class PlayerRepo {
           name TEXT,
           discordId TEXT,
           raceId INTEGER,
+          modId INTEGER,
           str INTEGER,
           dex INTEGER,
           int INTEGER,
@@ -25,15 +26,19 @@ export class PlayerRepo {
     return this.dao.run(sql);
   }
 
-  add(name: string, discordId: string, raceId: number) {
-    // silent ignores might not be the best solution since I want to show a message only if a new player was added
+  add(name: string, discordId: string, raceId: number, modId: number) {
+    // add calculation for attributes based on race an modifiers
     return this.dao.run(
       `
-    INSERT OR IGNORE INTO players (name, discordId, raceId, str, dex , int, lck)
-    SELECT ? , ? , ? , R.base_str AS str, R.base_dex AS dex, R.base_int AS int, R.base_lck AS lck
-    FROM [races] R
-    WHERE R.id = ?`,
-      [name, discordId, raceId, raceId]
+    INSERT OR IGNORE INTO players (name, discordId, raceId, modId, str, dex , int, lck)
+    SELECT ? , ? , ? , ?,
+      R.base_str + M.bonus_str - M.malus_str AS str,
+      R.base_dex + M.bonus_dex - M.malus_dex AS dex,
+      R.base_int + M.bonus_int - M.malus_int AS int,
+      R.base_lck + M.bonus_lck - M.malus_lck AS lck
+    FROM [races] R , [modifiers] M
+      WHERE R.id = ? AND M.id = ?`,
+      [name, discordId, raceId, modId, raceId, modId]
     );
   }
 
@@ -46,7 +51,7 @@ export class PlayerRepo {
   }
   getById(discordId: string): Promise<player> {
     return this.dao.get(
-      `SELECT P.id, P.name, P.discordId, P.raceId, R.name_s AS race
+      `SELECT P.id, P.name, P.discordId, P.raceId, P.str, P.dex , P.int, P.lck, R.name_s AS race
       FROM [players] P
       JOIN races R ON P.raceId = R.id
       WHERE discordId = ?`,

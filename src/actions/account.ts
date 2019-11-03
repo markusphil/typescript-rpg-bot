@@ -1,3 +1,4 @@
+import { player } from './../database/players';
 import { commandExecute, bot } from './../index';
 import { GuildMember } from 'discord.js';
 
@@ -13,10 +14,14 @@ export const addPlayer = (user: GuildMember) => {
   }
   console.log('adding new player');
   const raceId = bot.races.randomKey();
-  bot.playerRepo.add(user.displayName, user.id, raceId).then(() => {
+  const modId = bot.modifiers.randomKey();
+  bot.playerRepo.add(user.displayName, user.id, raceId, modId).then(() => {
     const playerRace = bot.races.get(raceId);
-    if (playerRace) {
-      user.send(`Your name is ${user.displayName}, \n ${playerRace.message} \n As typical for most ${playerRace.name}`);
+    const playerMod = bot.modifiers.get(modId);
+    if (playerRace && playerMod) {
+      user.send(
+        `${playerRace.message} \nAs typical for most ${playerRace.name}. \nBut ${playerMod.message} \nWelcome ${user.displayName}, ${playerMod.name} ${playerRace.name_s}!`
+      );
     }
   });
   bot.playerRepo
