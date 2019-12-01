@@ -1,3 +1,4 @@
+import { modifier } from './modifiers';
 import { race } from './races';
 import { DaoInterface } from './dao';
 
@@ -21,6 +22,8 @@ export class PlayerRepo {
           lck INTEGER,
           CONSTRAINT player_fk_raceId FOREIGN KEY (raceId)
           REFERENCES race(id) ON UPDATE CASCADE ON DELETE CASCADE
+          CONSTRAINT player_fk_modId FOREIGN KEY (modId)
+          REFERENCES modifiers(id) ON UPDATE CASCADE ON DELETE CASCADE
           UNIQUE (discordId))`;
 
     return this.dao.run(sql);
@@ -44,16 +47,18 @@ export class PlayerRepo {
 
   getAll(): Promise<players> {
     return this.dao.all(
-      `SELECT P.id, P.name, P.discordId, P.raceId, P.str, P.dex , P.int, P.lck, R.name_s AS race
+      `SELECT P.id, P.name, P.discordId, P.raceId, P.modId, P.str, P.dex , P.int, P.lck, R.name_s AS race, M.name AS modifier
       FROM [players] P
-      JOIN races R ON P.raceId = R.id`
+      JOIN races R ON P.raceId = R.id
+      JOIN modifiers M ON P.modId = M.id`
     );
   }
   getById(discordId: string): Promise<player> {
     return this.dao.get(
-      `SELECT P.id, P.name, P.discordId, P.raceId, P.str, P.dex , P.int, P.lck, R.name_s AS race
-      FROM [players] P
+      `SELECT P.id, P.name, P.discordId, P.raceId, P.modId, P.str, P.dex, P.int, P.lck, R.name_s AS race, M.name AS modifier
+      FROM[players] P
       JOIN races R ON P.raceId = R.id
+      JOIN modifiers M ON P.modId = M.id
       WHERE discordId = ?`,
       [discordId]
     );
@@ -72,6 +77,8 @@ export interface player {
   discordId: string;
   raceId: number;
   race: string;
+  modId: number;
+  modifier: string;
   str: number;
   dex: number;
   int: number;

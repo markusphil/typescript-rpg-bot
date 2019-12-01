@@ -6,7 +6,7 @@ import * as dotenv from 'dotenv';
 dotenv.config();
 import { logChannelId } from './config.json';
 
-import { Client, Collection, TextChannel, RichEmbed, GuildMember, Message } from 'discord.js';
+import { Client, Collection, TextChannel, Message } from 'discord.js';
 
 import { AppDAO } from './database/dao';
 import { RaceRepo, race } from './database/races';
@@ -91,7 +91,7 @@ actions.forEach(act => bot.actions.set(act.name, act));
 infos.forEach(info => bot.infos.set(info.name, info));
 
 // login in bot after setup started
-bot.client.login(process.env.BOT_TOKEN);
+bot.client.login(process.env.BOT_TOKEN).catch(err => console.log(err));
 
 // eventhandlers
 bot.client.on('guildMemberAdd', member => {
