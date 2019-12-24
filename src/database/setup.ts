@@ -1,10 +1,13 @@
-import { ModifierRepo } from './modifiers';
-import { PlayerRepo } from './players';
 import { AppDAO } from './dao';
 import { RaceRepo } from './races';
+import { ModifierRepo } from './modifiers';
+import { PlayerRepo } from './players';
+import { EnemyRepo } from './enemies';
 
 import raceData from './raceData.json';
 import modifierData from './modifierData.json';
+import enemyData from './enemyData.json';
+
 import { unlinkSync } from 'fs';
 // TODO: setup Modifiers
 function setup() {
@@ -19,6 +22,7 @@ function setup() {
   const races = new RaceRepo(dao);
   const players = new PlayerRepo(dao);
   const modifiers = new ModifierRepo(dao);
+  const enemies = new EnemyRepo(dao);
 
   const setupRaces = new Promise((resolve, reject) => {
     races
@@ -90,7 +94,26 @@ function setup() {
       });
   });
 
-  Promise.all([setupRaces, setupPlayers, setupModifiers])
+  const setupEnemies = new Promise((resolve, reject) => {
+    enemies
+      .createTable()
+      .then(() => {
+        return Promise.all(
+          enemyData.map(en => {
+            return enemies.add(en);
+          })
+        );
+      })
+      .then(() => {
+        console.log('set up enemies');
+        resolve();
+      })
+      .catch(err => {
+        reject(err);
+      });
+  });
+
+  Promise.all([setupRaces, setupPlayers, setupModifiers, setupEnemies])
     .then(() => {
       console.log('finished setup');
       process.exit(0);

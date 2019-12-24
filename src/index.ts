@@ -1,3 +1,4 @@
+import { enemies, enemy, EnemyRepo } from './database/enemies';
 import { sendError } from './utility/error';
 import { addPlayer } from './actions/account';
 import { actions } from './actions/actions';
@@ -22,6 +23,7 @@ export class Bot {
   races: Collection<number, race>;
   players: Collection<string, player>;
   modifiers: Collection<number, modifier>;
+  enemies: Collection<number, enemy>;
 
   actions: Collection<string, command>;
   infos: Collection<string, command>;
@@ -30,6 +32,7 @@ export class Bot {
   racesRepo = new RaceRepo(dao);
   playerRepo = new PlayerRepo(dao);
   modifierRepo = new ModifierRepo(dao);
+  enemyRepo = new EnemyRepo(dao);
 
   constructor() {
     this.client = new Client();
@@ -37,6 +40,7 @@ export class Bot {
     this.races = new Collection();
     this.players = new Collection();
     this.modifiers = new Collection();
+    this.enemies = new Collection();
 
     this.actions = new Collection();
     this.infos = new Collection();
@@ -85,6 +89,12 @@ bot.modifierRepo
     });
   })
   .catch(err => console.error(err));
+
+bot.enemyRepo.getAll().then(res => {
+  res.forEach((en, key) => {
+    bot.enemies.set(en.id || key, en);
+  });
+});
 
 // load actions / info collections
 actions.forEach(act => bot.actions.set(act.name, act));
