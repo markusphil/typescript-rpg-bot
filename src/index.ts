@@ -1,4 +1,4 @@
-import { enemies, enemy, EnemyRepo } from './database/enemies';
+import { enemies, enemyType, EnemyRepo } from './database/enemies';
 import { sendError } from './utility/error';
 import { addPlayer } from './actions/account';
 import { actions } from './actions/actions';
@@ -23,7 +23,7 @@ export class Bot {
   races: Collection<number, race>;
   players: Collection<string, player>;
   modifiers: Collection<number, modifier>;
-  enemies: Collection<number, enemy>;
+  enemies: Collection<number, enemyType>;
 
   actions: Collection<string, command>;
   infos: Collection<string, command>;

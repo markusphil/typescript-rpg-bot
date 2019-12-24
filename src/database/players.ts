@@ -83,4 +83,5 @@ export interface player {
   dex: number;
   int: number;
   lck: number;
+  hp?: number;
 }

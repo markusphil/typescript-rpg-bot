@@ -1,3 +1,4 @@
+import { modifier } from './modifiers';
 import { DaoInterface } from './dao';
 
 // TODO: asign creatures to habitats
@@ -25,7 +26,7 @@ export class EnemyRepo {
     return this.dao.run(sql);
   }
 
-  add(enemy: enemy) {
+  add(enemy: enemyType) {
     return this.dao.run(
       `INSERT INTO enemies (
         name,
@@ -43,10 +44,10 @@ export class EnemyRepo {
       [
         enemy.name,
         enemy.description,
-        enemy.strength,
-        enemy.dexterity,
-        enemy.intelligence,
-        enemy.luck,
+        enemy.str,
+        enemy.dex,
+        enemy.int,
+        enemy.lck,
         enemy.strMultiplier,
         enemy.dexMultiplier,
         enemy.intMultiplier,
@@ -55,7 +56,7 @@ export class EnemyRepo {
     );
   }
 
-  getById(id: number): Promise<enemy> {
+  getById(id: number): Promise<enemyType> {
     return this.dao.get(`SELECT * FROM enemies WHERE id = ?`, [id]);
   }
 
@@ -68,18 +69,30 @@ export class EnemyRepo {
     return this.dao.run(`DELETE FROM races`);
   }
 }
-export interface enemies extends Array<enemy> {}
+export interface enemies extends Array<enemyType> {}
 
-export interface enemy {
+export interface enemyType {
   id?: number;
   name: string;
   description: string;
-  strength: number;
-  dexterity: number;
-  intelligence: number;
-  luck: number;
+  str: number;
+  dex: number;
+  int: number;
+  lck: number;
   strMultiplier: number;
   dexMultiplier: number;
   intMultiplier: number;
   lckMultiplier: number;
+}
+
+export interface enemy {
+  name: string;
+  description: string;
+  modifier: string;
+  lvl: number;
+  str: number;
+  dex: number;
+  int: number;
+  lck: number;
+  hp: number;
 }

@@ -1,3 +1,4 @@
+import { enemiesInfo, singleEnemyInfo } from './enemyInfo';
 import { modifierInfo } from './modifierInfo';
 import { playerInfo, activePlayerInfo } from './playerInfo';
 import { actionsInfo, helpInfo } from './commands';
@@ -42,5 +43,18 @@ export const infos: Array<command> = [
     aliases: ['me', 'stats'],
     description: 'displays your current stats',
     execute: activePlayerInfo,
+  },
+  {
+    name: 'enemies',
+    aliases: ['monsters', 'creatures'],
+    description: 'displays all known Enemies',
+    execute: enemiesInfo,
+  },
+  {
+    name: 'enemy',
+    aliases: ['monster', 'creature'],
+    usage: '<?enemyname>',
+    description: 'provides info about a specific Enemy. If no enemyname is set it shows a random enemy',
+    execute: singleEnemyInfo,
   },
 ];
