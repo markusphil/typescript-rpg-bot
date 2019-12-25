@@ -1,11 +1,11 @@
-import { modifier } from './../database/modifiers';
-import { enemy, enemyType } from './../database/enemies';
+import { enemy } from './../database/enemies';
 import { commandExecute } from './../index';
 import { sendError } from './../utility/error';
 import { player } from './../database/players';
 import { User, RichEmbed, Message } from 'discord.js';
 import { bot } from '..';
-import { actionColor } from '../config.json';
+import { actionColor, expMulitplier } from '../config.json';
+import { calcReceivedExp, addPlayerExp } from '../mechanics/exp';
 
 export const goHunting: commandExecute = (args, message) => {
   const player = getPlayer(message.author);
@@ -14,10 +14,10 @@ export const goHunting: commandExecute = (args, message) => {
     return;
   }
 
-  const fightingPlayer: fighter = { ...player, hp: calcHP(player.dex, player.str) };
+  const fightingPlayer: fighter = { ...player, hp: calcHP(player.dex, player.str), isPlayer: true };
   const enemy = createRandomEnemy();
 
-  const embed = new RichEmbed().setColor(actionColor); //ToDo: get colors for races
+  const embed = new RichEmbed().setColor(actionColor);
   embed
     .setTitle('You went out for a Hunt')
     .setDescription(`after a while of striving through the forest you've found a ${enemy.modifier} ${enemy.name}`)
@@ -64,6 +64,7 @@ function createRandomEnemy(): enemy {
     int: int,
     lck: lck,
     hp: hp,
+    isPlayer: false,
   };
 }
 function doesPlayerStart(player: fighter, enemy: fighter): Boolean {
@@ -96,7 +97,7 @@ function fight(player: fighter, enemy: fighter, message: Message): RichEmbed {
    if it should scale, a good idea might be to implement a microservice dedicated to fight calculations
    */
   while (p1.hp > 0 && p2.hp > 0) {
-    // TODO: handle long logs
+    // handle long logs
     if (fightLog.fields!.length >= 10) {
       message.author.send(fightLog);
       fightLog = new RichEmbed().setColor(actionColor).setTitle('FIGHT LOG');
@@ -117,6 +118,11 @@ function fight(player: fighter, enemy: fighter, message: Message): RichEmbed {
       // TODO: create a real calculation using wapon, armor, etc
       if (p2.hp <= 0) {
         fightLog.addField(`${p1.name} is victorious`, `${p2.name} lost`);
+        if (p1.isPlayer) {
+          const receivedExp = calcReceivedExp(p1.lvl, p2.lvl);
+          addPlayerExp(message.author, receivedExp);
+          fightLog.addField(`REWARD`, `You received ${receivedExp}`);
+        }
       }
     } else {
       fightLog.addField(p1.name + 'attacks', "...and doesn't hit!");
@@ -136,5 +142,7 @@ interface fighter {
   dex: number;
   int: number;
   lck: number;
+  lvl: number;
   hp: number;
+  isPlayer: boolean;
 }

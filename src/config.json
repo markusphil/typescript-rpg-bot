@@ -1,5 +1,9 @@
 {
   "logChannelId": "627866917394317334",
   "infoColor": "0x40E0D0",
-  "actionColor": "0xCF5300"
+  "actionColor": "0xCF5300",
+  "successColor": "#7CFC00",
+  "expMulitplier": 10,
+  "expBasis": 50,
+  "apPerLvl": 2
 }

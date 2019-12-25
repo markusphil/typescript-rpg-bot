@@ -2,6 +2,7 @@ import { sendError } from './../utility/error';
 import { RichEmbed } from 'discord.js';
 import { bot, commandExecute } from '../index';
 import { infoColor } from '../config.json';
+import { getLvlBoundry } from '../mechanics/exp';
 
 export const playerInfo: commandExecute = (args, message) => {
   const embed = new RichEmbed()
@@ -16,6 +17,7 @@ export const activePlayerInfo: commandExecute = (args, message) => {
   if (!player) {
     sendError("Ooops it looks like you didn't join the game yet!", message);
   } else {
+    const lvlBoundry = getLvlBoundry(player.lvl);
     const embed = new RichEmbed()
       .setColor(infoColor)
       .setTitle('Your Stats')
@@ -24,6 +26,10 @@ export const activePlayerInfo: commandExecute = (args, message) => {
       .addField(
         'Attributes',
         `Strength: ${player.str}\n Dexterity: ${player.dex}\n Intelligence: ${player.int}\n Luck: ${player.lck}`
+      )
+      .addField(
+        'Level Stats:',
+        `LVL: ${player.lvl}\n Exp: ${player.exp} / ${lvlBoundry}\n Attribute Points: ${player.ap}`
       );
     message.author.send(embed);
   }

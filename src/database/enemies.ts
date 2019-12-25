@@ -95,4 +95,5 @@ export interface enemy {
   int: number;
   lck: number;
   hp: number;
+  isPlayer: boolean;
 }
