@@ -1,9 +1,9 @@
-import { sendError } from './../utility/error';
-import { player } from './../database/players';
-import { commandExecute, bot } from './../index';
-import { successColor } from '../config.json';
+import { sendError } from '../../utility/error';
+import { player } from '../../database/players';
+import { commandExecute, bot } from '../../index';
+import { successColor } from '../../config.json';
 import { RichEmbed } from 'discord.js';
-import { getPlayer } from '../utility/playerUtility';
+import { getPlayer } from '../../utility/playerUtility';
 
 export const improveAttributes: commandExecute = (args, message) => {
   console.log('start training');
@@ -37,7 +37,7 @@ export const improveAttributes: commandExecute = (args, message) => {
       );
 
     bot.playerRepo
-      .addAttributes(player.str, player.dex, player.int, player.lck, player.ap)
+      .addAttributes(player.str, player.dex, player.int, player.lck, player.ap, player.id)
       .then(() => {
         message.author.send(emb);
       })

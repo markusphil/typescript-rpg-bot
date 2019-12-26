@@ -1,8 +1,8 @@
-import { sendError } from './../utility/error';
+import { sendError } from '../../utility/error';
 import { RichEmbed } from 'discord.js';
-import { bot, commandExecute } from '../index';
-import { infoColor } from '../config.json';
-import { getLvlBoundry } from '../mechanics/exp';
+import { bot, commandExecute } from '../../index';
+import { infoColor } from '../../config.json';
+import { getLvlBoundry } from '../../mechanics/exp';
 
 export const playerInfo: commandExecute = (args, message) => {
   const embed = new RichEmbed()

@@ -1,5 +1,4 @@
-import { player } from './../database/players';
-import { commandExecute, bot } from './../index';
+import { commandExecute, bot } from '../../index';
 import { GuildMember } from 'discord.js';
 
 export const joinByCommand: commandExecute = (args, message) => {

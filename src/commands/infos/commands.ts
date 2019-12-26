@@ -1,6 +1,6 @@
 import { RichEmbed } from 'discord.js';
-import { bot, commandExecute } from '../index';
-import { infoColor } from '../config.json';
+import { bot, commandExecute } from '../../index';
+import { infoColor } from '../../config.json';
 
 export const helpInfo: commandExecute = (args, message) => {
   let embed = new RichEmbed().setColor(infoColor).setTitle('Available Info Commands');

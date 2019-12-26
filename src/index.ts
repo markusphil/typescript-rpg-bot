@@ -1,8 +1,8 @@
 import { enemies, enemyType, EnemyRepo } from './database/enemies';
 import { sendError } from './utility/error';
-import { addPlayer } from './actions/account';
-import { actions } from './actions/actions';
-import { infos } from './infos/infos';
+import { addPlayer } from './commands/actions/account';
+import { actions } from './commands/actions/actions';
+import { infos } from './commands/infos/infos';
 import * as dotenv from 'dotenv';
 dotenv.config();
 import { logChannelId } from './config.json';

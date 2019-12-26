@@ -3,7 +3,7 @@ import { modifierInfo } from './modifierInfo';
 import { playerInfo, activePlayerInfo } from './playerInfo';
 import { actionsInfo, helpInfo } from './commands';
 import { racesInfo, singleRaceInfo } from './raceInfo';
-import { command } from '../index';
+import { command } from '../../index';
 
 export const infos: Array<command> = [
   {

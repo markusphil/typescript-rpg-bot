@@ -1,7 +1,7 @@
 import { RichEmbed } from 'discord.js';
-import { bot, commandExecute } from '../index';
-import { infoColor } from '../config.json';
-import { modifier } from '../database/modifiers';
+import { bot, commandExecute } from '../../index';
+import { infoColor } from '../../config.json';
+import { modifier } from '../../database/modifiers';
 
 export const modifierInfo: commandExecute = (args, message) => {
   let embed = new RichEmbed().setColor(infoColor).setTitle('Available Modifiers');

@@ -106,18 +106,19 @@ export class PlayerRepo {
     );
   }
 
-  addAttributes(str: number, dex: number, int: number, lck: number, ap: number): Promise<any> {
+  addAttributes(str: number, dex: number, int: number, lck: number, ap: number, playerId: number): Promise<any> {
+    console.log(` s: ${str} d: ${dex} i: ${int} l: ${lck} ap: ${ap} `);
     return this.dao.run(
       `
       UPDATE players
       SET str = ?,
           dex = ?,
           int = ?,
-          lck = ?
+          lck = ?,
           ap = ?
       WHERE id = ?
     `,
-      [str, dex, int, lck, ap]
+      [str, dex, int, lck, ap, playerId]
     );
   }
 

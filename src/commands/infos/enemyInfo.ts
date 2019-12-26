@@ -1,8 +1,8 @@
-import { enemyType } from './../database/enemies';
-import { sendError } from './../utility/error';
+import { enemyType } from '../../database/enemies';
+import { sendError } from '../../utility/error';
 import { RichEmbed } from 'discord.js';
-import { bot, commandExecute } from '../index';
-import { infoColor } from '../config.json';
+import { bot, commandExecute } from '../../index';
+import { infoColor } from '../../config.json';
 import { capitalize } from 'lodash';
 
 export const enemiesInfo: commandExecute = (args, message) => {
