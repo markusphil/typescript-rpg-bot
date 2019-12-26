@@ -1,29 +1,25 @@
 import { enemy } from './../database/enemies';
 import { commandExecute } from './../index';
 import { sendError } from './../utility/error';
-import { player } from './../database/players';
-import { User, RichEmbed, Message } from 'discord.js';
+import { RichEmbed, Message } from 'discord.js';
 import { bot } from '..';
-import { actionColor, expMulitplier } from '../config.json';
+import { actionColor } from '../config.json';
 import { calcReceivedExp, addPlayerExp } from '../mechanics/exp';
+import { getPlayer } from '../utility/playerUtility';
 
 export const goHunting: commandExecute = (args, message) => {
-  const player = getPlayer(message.author);
-  if (!player) {
-    sendError('You need to join the game before performing this action');
-    return;
-  }
+  try {
+    const player = getPlayer(message.author);
+    const fightingPlayer: fighter = { ...player, hp: calcHP(player.dex, player.str), isPlayer: true };
+    const enemy = createRandomEnemy(player.lvl);
 
-  const fightingPlayer: fighter = { ...player, hp: calcHP(player.dex, player.str), isPlayer: true };
-  const enemy = createRandomEnemy();
-
-  const embed = new RichEmbed().setColor(actionColor);
-  embed
-    .setTitle('You went out for a Hunt')
-    .setDescription(`after a while of striving through the forest you've found a ${enemy.modifier} ${enemy.name}`)
-    .addField(
-      'Stats',
-      `
+    const embed = new RichEmbed().setColor(actionColor);
+    embed
+      .setTitle('You went out for a Hunt')
+      .setDescription(`after a while of striving through the forest you've found a ${enemy.modifier} ${enemy.name}`)
+      .addField(
+        'Stats',
+        `
         Lvl: ${enemy.lvl} \n
         Strength: ${enemy.str}\n
         Dexterity: ${enemy.dex}\n
@@ -31,28 +27,29 @@ export const goHunting: commandExecute = (args, message) => {
         Luck: ${enemy.lck}\n
         HP: ${enemy.hp}
     `
-    );
-  message.author.send(embed);
+      );
+    message.author.send(embed);
 
-  const fightLog = fight(fightingPlayer, enemy, message);
-  message.author.send(fightLog);
+    const fightLog = fight(fightingPlayer, enemy, message);
+    message.author.send(fightLog);
+  } catch (err) {
+    console.log(err);
+    sendError('You need to join the game before performing this action');
+    return;
+  }
 };
 
-// TODO: move helper functions to seperate file
-function getPlayer(member: User): player | undefined {
-  return bot.players.get(member.id);
-}
-
-function createRandomEnemy(): enemy {
+function createRandomEnemy(baseLvl: number): enemy {
   const enemyType = bot.enemies.random();
   const modifier = bot.modifiers.random();
-  // TODO: add calculation depending on player-lvl
-  const lvl = Math.round(Math.random());
+  // calculation: player LVL +/- 2
+  let lvl = baseLvl + Math.round((Math.random() - 0.5) * 4);
+  if (lvl < 1) lvl = 1;
   // calculate attributes
-  const str = enemyType.str + Math.floor(enemyType.strMultiplier * lvl) + modifier.bonus_str - modifier.malus_str;
-  const dex = enemyType.dex + Math.floor(enemyType.dexMultiplier * lvl) + modifier.bonus_dex - modifier.malus_dex;
-  const int = enemyType.int + Math.floor(enemyType.intMultiplier * lvl) + modifier.bonus_int - modifier.malus_int;
-  const lck = enemyType.lck + Math.floor(enemyType.lckMultiplier * lvl) + modifier.bonus_lck - modifier.malus_lck;
+  const str = enemyType.str + Math.round(enemyType.strMultiplier * lvl) + modifier.bonus_str - modifier.malus_str;
+  const dex = enemyType.dex + Math.round(enemyType.dexMultiplier * lvl) + modifier.bonus_dex - modifier.malus_dex;
+  const int = enemyType.int + Math.round(enemyType.intMultiplier * lvl) + modifier.bonus_int - modifier.malus_int;
+  const lck = enemyType.lck + Math.round(enemyType.lckMultiplier * lvl) + modifier.bonus_lck - modifier.malus_lck;
   const hp = calcHP(dex, str);
   return {
     name: enemyType.name,
@@ -121,7 +118,7 @@ function fight(player: fighter, enemy: fighter, message: Message): RichEmbed {
         if (p1.isPlayer) {
           const receivedExp = calcReceivedExp(p1.lvl, p2.lvl);
           addPlayerExp(message.author, receivedExp);
-          fightLog.addField(`REWARD`, `You received ${receivedExp}`);
+          fightLog.addField(`REWARD`, `You received ${receivedExp} EXP`);
         }
       }
     } else {

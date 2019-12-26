@@ -1,4 +1,3 @@
-import { player } from './../database/players';
 import { expMulitplier, expBasis, apPerLvl, successColor } from '../config.json';
 import { bot } from '..';
 import { User, RichEmbed } from 'discord.js';
@@ -11,7 +10,6 @@ export function calcReceivedExp(plvl: number, elvl: number): number {
 
 export function addPlayerExp(member: User, exp: number) {
   const player = getPlayer(member);
-  if (!player) throw new Error('Player not Found!');
   // check lvl boundry
   const boundry = getLvlBoundry(player.lvl);
   let newExp = player.exp + exp;
@@ -28,7 +26,7 @@ export function addPlayerExp(member: User, exp: number) {
       .setDescription(
         `
         Congratulations ${player.name}, \n
-        You reached ${newlvl}!`
+        You reached LVL ${newlvl}!`
       )
       .addField('Current Attrinbute Points', newAp);
     member.send(emb);

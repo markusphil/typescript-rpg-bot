@@ -93,7 +93,7 @@ export class PlayerRepo {
     );
   }
 
-  addExp(exp: number, lvl: number, ap: number, playerId: number) {
+  addExp(exp: number, lvl: number, ap: number, playerId: number): Promise<any> {
     return this.dao.run(
       `
       UPDATE players
@@ -103,6 +103,21 @@ export class PlayerRepo {
       WHERE id = ?
     `,
       [exp, lvl, ap, playerId]
+    );
+  }
+
+  addAttributes(str: number, dex: number, int: number, lck: number, ap: number): Promise<any> {
+    return this.dao.run(
+      `
+      UPDATE players
+      SET str = ?,
+          dex = ?,
+          int = ?,
+          lck = ?
+          ap = ?
+      WHERE id = ?
+    `,
+      [str, dex, int, lck, ap]
     );
   }
 
