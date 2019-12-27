@@ -1,7 +1,9 @@
+import { addPlayer } from './../commands/actions/account';
 import { fighter } from './../dataTypes/interfaces';
 import { RichEmbed, Message } from 'discord.js';
 import { actionColor } from '../config.json';
 import { calcReceivedExp, addPlayerExp } from './exp';
+import { addPlayerLoot } from './loot';
 
 function doesPlayerStart(player: fighter, enemy: fighter): Boolean {
   const pInit = (player.int + player.dex * 0.75) * (1 + 0.5 * player.lck);
@@ -10,7 +12,7 @@ function doesPlayerStart(player: fighter, enemy: fighter): Boolean {
   return pInit > eInit;
 }
 
-export function fight(player: fighter, enemy: fighter, message: Message): RichEmbed {
+export async function fight(player: fighter, enemy: fighter, message: Message): Promise<RichEmbed> {
   // prepare fightLog
   let fightLog = new RichEmbed().setColor(actionColor).setTitle('FIGHT LOG');
   // determine first hit
@@ -53,7 +55,8 @@ export function fight(player: fighter, enemy: fighter, message: Message): RichEm
         if (p1.isPlayer) {
           const receivedExp = calcReceivedExp(p1.lvl, p2.lvl);
           addPlayerExp(message.author, receivedExp);
-          fightLog.addField(`REWARD`, `You received ${receivedExp} EXP`);
+          const loot = await addPlayerLoot(message.author);
+          fightLog.addField(`REWARD`, `You received ${receivedExp} EXP \n Loot: ${loot}`);
         }
       }
     } else {

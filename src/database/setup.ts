@@ -1,3 +1,5 @@
+import { items } from './../dataTypes/interfaces';
+import { ItemRepo } from './items';
 import { AppDAO } from './dao';
 import { RaceRepo } from './races';
 import { ModifierRepo } from './modifiers';
@@ -7,6 +9,7 @@ import { EnemyRepo } from './enemies';
 import raceData from './raceData.json';
 import modifierData from './modifierData.json';
 import enemyData from './enemyData.json';
+import itemData from './itemData.json';
 
 import { unlinkSync } from 'fs';
 // TODO: setup Modifiers
@@ -23,6 +26,7 @@ function setup() {
   const players = new PlayerRepo(dao);
   const modifiers = new ModifierRepo(dao);
   const enemies = new EnemyRepo(dao);
+  const items = new ItemRepo(dao);
 
   const setupRaces = new Promise((resolve, reject) => {
     races
@@ -57,7 +61,10 @@ function setup() {
       .createTable()
       .then(() => {
         console.log('created player Table');
-        resolve();
+        players.createInventory().then(() => {
+          console.log('created inventory table');
+          resolve();
+        });
       })
       .catch(err => {
         reject(err);
@@ -113,7 +120,26 @@ function setup() {
       });
   });
 
-  Promise.all([setupRaces, setupPlayers, setupModifiers, setupEnemies])
+  const setupItems = new Promise((resolve, reject) => {
+    items
+      .createTable()
+      .then(() => {
+        return Promise.all(
+          itemData.map(item => {
+            return items.add(item);
+          })
+        );
+      })
+      .then(() => {
+        console.log('set up items');
+        resolve();
+      })
+      .catch(err => {
+        reject(err);
+      });
+  });
+
+  Promise.all([setupRaces, setupPlayers, setupModifiers, setupEnemies, setupItems])
     .then(() => {
       console.log('finished setup');
       process.exit(0);

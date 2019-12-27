@@ -1,4 +1,4 @@
-import { enemies, enemyType, EnemyRepo } from './database/enemies';
+import { EnemyRepo } from './database/enemies';
 import { sendError } from './utility/error';
 import { addPlayer } from './commands/actions/account';
 import { actions } from './commands/actions/actions';
@@ -10,9 +10,10 @@ import { logChannelId } from './config.json';
 import { Client, Collection, TextChannel, Message } from 'discord.js';
 
 import { AppDAO } from './database/dao';
-import { RaceRepo, race } from './database/races';
-import { PlayerRepo, player } from './database/players';
-import { modifier, ModifierRepo } from './database/modifiers';
+import { RaceRepo } from './database/races';
+import { PlayerRepo } from './database/players';
+import { ModifierRepo } from './database/modifiers';
+import { race, player, modifier, enemyType, command } from './dataTypes/interfaces';
 
 const dao = new AppDAO('./database.sqlite3');
 
@@ -151,17 +152,3 @@ bot.client.on('message', message => {
       break;
   }
 });
-
-export interface command {
-  name: string;
-  description: string;
-  usage?: string;
-  aliases?: string[];
-  requireArgs?: boolean;
-  guildOnly?: boolean;
-  execute: commandExecute;
-}
-
-export interface commandExecute {
-  (args: string[], message: Message): void;
-}

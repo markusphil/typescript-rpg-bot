@@ -1,5 +1,6 @@
-import { commandExecute, bot } from '../../index';
+import { bot } from '../../index';
 import { GuildMember } from 'discord.js';
+import { commandExecute } from '../../dataTypes/interfaces';
 
 export const joinByCommand: commandExecute = (args, message) => {
   addPlayer(message.member);

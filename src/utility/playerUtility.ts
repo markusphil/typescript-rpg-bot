@@ -1,4 +1,4 @@
-import { player } from './../database/players';
+import { player } from '../dataTypes/interfaces';
 import { User } from 'discord.js';
 import { bot } from '..';
 

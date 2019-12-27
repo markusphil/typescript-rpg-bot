@@ -1,0 +1,14 @@
+[
+  {
+    "name": "fur",
+    "description": "A piece of animal fur",
+    "value": 5,
+    "type": "loot"
+  },
+  {
+    "name": "tusk",
+    "description": "An impressive tusk",
+    "value": 15,
+    "type": "loot"
+  }
+]

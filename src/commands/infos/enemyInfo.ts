@@ -1,9 +1,9 @@
-import { enemyType } from '../../database/enemies';
 import { sendError } from '../../utility/error';
 import { RichEmbed } from 'discord.js';
-import { bot, commandExecute } from '../../index';
+import { bot } from '../../index';
 import { infoColor } from '../../config.json';
 import { capitalize } from 'lodash';
+import { commandExecute } from '../../dataTypes/interfaces';
 
 export const enemiesInfo: commandExecute = (args, message) => {
   let embed = new RichEmbed().setColor(infoColor).setTitle('Known Enemies');

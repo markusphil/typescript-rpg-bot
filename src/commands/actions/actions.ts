@@ -1,6 +1,6 @@
 import { improveAttributes } from './attributes';
 import { joinByCommand } from './account';
-import { command } from '../../index';
+import { command } from '../../dataTypes/interfaces';
 import { goHunting } from './hunt';
 
 export const actions: Array<command> = [

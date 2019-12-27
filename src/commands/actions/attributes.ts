@@ -1,9 +1,9 @@
 import { sendError } from '../../utility/error';
-import { commandExecute, bot } from '../../index';
+import { bot } from '../../index';
 import { successColor } from '../../config.json';
 import { RichEmbed } from 'discord.js';
 import { getPlayer } from '../../utility/playerUtility';
-import { player } from '../../dataTypes/interfaces';
+import { player, commandExecute } from '../../dataTypes/interfaces';
 
 export const improveAttributes: commandExecute = (args, message) => {
   console.log('start training');

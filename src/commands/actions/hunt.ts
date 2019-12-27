@@ -1,14 +1,13 @@
-import { enemy } from '../../database/enemies';
-import { commandExecute } from '../../index';
 import { sendError } from '../../utility/error';
 import { RichEmbed } from 'discord.js';
 import { bot } from '../..';
 import { actionColor } from '../../config.json';
 
 import { getPlayer } from '../../utility/playerUtility';
-import { fight, fighter } from '../../mechanics/fight';
+import { fight } from '../../mechanics/fight';
+import { fighter, enemy, commandExecute } from '../../dataTypes/interfaces';
 
-export const goHunting: commandExecute = (args, message) => {
+export const goHunting: commandExecute = async (args, message) => {
   try {
     const player = getPlayer(message.author);
     const fightingPlayer: fighter = { ...player, hp: calcHP(player.dex, player.str), isPlayer: true };
@@ -31,7 +30,7 @@ export const goHunting: commandExecute = (args, message) => {
       );
     message.author.send(embed);
 
-    const fightLog = fight(fightingPlayer, enemy, message);
+    const fightLog = await fight(fightingPlayer, enemy, message);
     message.author.send(fightLog);
   } catch (err) {
     console.log(err);

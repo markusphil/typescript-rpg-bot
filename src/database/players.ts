@@ -127,4 +127,37 @@ export class PlayerRepo {
     console.warn('deleting all entries');
     return this.dao.run(`DELETE FROM players`);
   }
+
+  createInventory() {
+    const sql = `
+        CREATE TABLE IF NOT EXISTS inventory (
+          id INTEGER PRIMARY KEY AUTOINCREMENT,
+          playerId INTEGER,
+          itemId INTEGER,
+          CONSTRAINT inventory_fk_playerId FOREIGN KEY (playerId)
+          REFERENCES player(id) ON UPDATE CASCADE ON DELETE CASCADE
+          CONSTRAINT inventory_fk_itemId FOREIGN KEY (itemId)
+          REFERENCES item(id) ON UPDATE CASCADE ON DELETE CASCADE
+          )`;
+    return this.dao.run(sql);
+  }
+
+  inventoryAdd(playerId: number, itemId: number) {
+    return this.dao.run(
+      `
+        INSERT INTO inventory (playerId, itemId)
+        VALUES (?, ?)`,
+      [playerId, itemId]
+    );
+  }
+
+  inventoryRemove(playerId: number, itemId: number) {
+    return this.dao.run(
+      `
+        DELETE FROM inventory
+        WHERE playerId = ? AND itemId = ?)
+        VALUES (?, ?)`,
+      [playerId, itemId]
+    );
+  }
 }
