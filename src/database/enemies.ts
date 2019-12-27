@@ -1,5 +1,5 @@
-import { modifier } from './modifiers';
 import { DaoInterface } from './dao';
+import { enemies, enemyType } from '../dataTypes/interfaces';
 
 // TODO: asign creatures to habitats
 export class EnemyRepo {
@@ -68,32 +68,4 @@ export class EnemyRepo {
     console.warn('deleting all races');
     return this.dao.run(`DELETE FROM races`);
   }
-}
-export interface enemies extends Array<enemyType> {}
-
-export interface enemyType {
-  id?: number;
-  name: string;
-  description: string;
-  str: number;
-  dex: number;
-  int: number;
-  lck: number;
-  strMultiplier: number;
-  dexMultiplier: number;
-  intMultiplier: number;
-  lckMultiplier: number;
-}
-
-export interface enemy {
-  name: string;
-  description: string;
-  modifier: string;
-  lvl: number;
-  str: number;
-  dex: number;
-  int: number;
-  lck: number;
-  hp: number;
-  isPlayer: boolean;
 }

@@ -1,3 +1,4 @@
+import { fighter } from './../dataTypes/interfaces';
 import { RichEmbed, Message } from 'discord.js';
 import { actionColor } from '../config.json';
 import { calcReceivedExp, addPlayerExp } from './exp';
@@ -65,15 +66,4 @@ export function fight(player: fighter, enemy: fighter, message: Message): RichEm
   }
 
   return fightLog;
-}
-
-export interface fighter {
-  name: string;
-  str: number;
-  dex: number;
-  int: number;
-  lck: number;
-  lvl: number;
-  hp: number;
-  isPlayer: boolean;
 }

@@ -1,3 +1,4 @@
+import { modifier, modifiers } from './../dataTypes/interfaces';
 import { DaoInterface } from './dao';
 
 export class ModifierRepo {
@@ -66,19 +67,4 @@ export class ModifierRepo {
     console.warn('deleting all modifiers');
     return this.dao.run(`DELETE FROM modifiers`);
   }
-}
-export interface modifiers extends Array<modifier> {}
-
-export interface modifier {
-  id: number;
-  name: string;
-  message: string;
-  bonus_str: number;
-  bonus_dex: number;
-  bonus_int: number;
-  bonus_lck: number;
-  malus_str: number;
-  malus_dex: number;
-  malus_int: number;
-  malus_lck: number;
 }

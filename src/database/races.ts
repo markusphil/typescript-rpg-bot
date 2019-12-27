@@ -1,3 +1,4 @@
+import { race, races } from './../dataTypes/interfaces';
 import { DaoInterface } from './dao';
 
 export class RaceRepo {
@@ -51,17 +52,4 @@ export class RaceRepo {
     console.warn('deleting all races');
     return this.dao.run(`DELETE FROM races`);
   }
-}
-export interface races extends Array<race> {}
-
-export interface race {
-  id: number;
-  name: string;
-  name_s: string;
-  description: string;
-  message: string;
-  base_str: number;
-  base_dex: number;
-  base_int: number;
-  base_lck: number;
 }

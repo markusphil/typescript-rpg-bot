@@ -1,3 +1,4 @@
+import { player, players } from './../dataTypes/interfaces';
 import { DaoInterface } from './dao';
 
 export class PlayerRepo {
@@ -126,23 +127,4 @@ export class PlayerRepo {
     console.warn('deleting all entries');
     return this.dao.run(`DELETE FROM players`);
   }
-}
-export interface players extends Array<player> {}
-
-export interface player {
-  id: number;
-  name: string;
-  discordId: string;
-  raceId: number;
-  race: string;
-  modId: number;
-  modifier: string;
-  str: number;
-  dex: number;
-  int: number;
-  lck: number;
-  exp: number;
-  lvl: number;
-  ap: number;
-  hp?: number;
 }
