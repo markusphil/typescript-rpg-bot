@@ -1,4 +1,4 @@
-import { items } from './../dataTypes/interfaces';
+import { items, enemies } from './../dataTypes/interfaces';
 import { ItemRepo } from './items';
 import { AppDAO } from './dao';
 import { RaceRepo } from './races';
@@ -12,6 +12,7 @@ import enemyData from './enemyData.json';
 import itemData from './itemData.json';
 
 import { unlinkSync } from 'fs';
+import { resolve } from 'dns';
 // TODO: setup Modifiers
 function setup() {
   try {
@@ -139,7 +140,28 @@ function setup() {
       });
   });
 
-  Promise.all([setupRaces, setupPlayers, setupModifiers, setupEnemies, setupItems])
+  const setupLoot = new Promise((resolve, reject) => {
+    enemies
+      .createLootTable()
+      .then(() => {
+        let lootPromises: Array<Promise<any>> = [];
+        enemyData.forEach((en, id) => {
+          en.loot.forEach(itm => {
+            lootPromises.push(enemies.fillLootTable(id + 1, itm.id, itm.chance));
+          });
+        });
+        return Promise.all(lootPromises);
+      })
+      .then(() => {
+        console.log('set up enemyLoot');
+        resolve();
+      })
+      .catch(err => {
+        reject(err);
+      });
+  });
+
+  Promise.all([setupRaces, setupPlayers, setupModifiers, setupEnemies, setupItems, setupLoot])
     .then(() => {
       console.log('finished setup');
       process.exit(0);

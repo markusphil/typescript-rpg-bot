@@ -21,9 +21,22 @@ export interface player {
 }
 
 export interface enemies extends Array<enemyType> {}
-
+// The enemyType is received from the db and needs an ID...
 export interface enemyType {
-  id?: number;
+  id: number;
+  name: string;
+  description: string;
+  str: number;
+  dex: number;
+  int: number;
+  lck: number;
+  strMultiplier: number;
+  dexMultiplier: number;
+  intMultiplier: number;
+  lckMultiplier: number;
+}
+//... while enemyData is used to fill the DB and doens't have an id yet
+export interface enemyData {
   name: string;
   description: string;
   str: number;
@@ -37,6 +50,7 @@ export interface enemyType {
 }
 
 export interface enemy {
+  id: number;
   name: string;
   description: string;
   modifier: string;
@@ -58,6 +72,7 @@ export interface fighter {
   lvl: number;
   hp: number;
   isPlayer: boolean;
+  id: number;
 }
 
 export interface modifiers extends Array<modifier> {}
@@ -98,6 +113,15 @@ export interface item {
   description: string;
   value: number;
   type: string;
+}
+
+export interface lootList extends Array<loot> {}
+
+export interface loot {
+  enemyId: number;
+  itemId: number;
+  itemName: string;
+  chance: number;
 }
 
 export interface command {

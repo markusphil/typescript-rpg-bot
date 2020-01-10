@@ -9,7 +9,17 @@
     "strMultiplier": 0.7,
     "dexMultiplier": 0.2,
     "intMultiplier": 0,
-    "lckMultiplier": 0.1
+    "lckMultiplier": 0.1,
+    "loot": [
+      {
+        "id": 1,
+        "chance": 0.6
+      },
+      {
+        "id": 2,
+        "chance": 0.5
+      }
+    ]
   },
   {
     "name": "Fox",
@@ -21,6 +31,12 @@
     "strMultiplier": 0.2,
     "dexMultiplier": 0.3,
     "intMultiplier": 0.4,
-    "lckMultiplier": 0.1
+    "lckMultiplier": 0.1,
+      "loot": [
+        {
+          "id": 1,
+          "chance": 1
+        }
+      ]
   }
 ]

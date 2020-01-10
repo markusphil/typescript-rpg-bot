@@ -1,5 +1,4 @@
-import { addPlayer } from './../commands/actions/account';
-import { fighter } from './../dataTypes/interfaces';
+import { fighter, enemy } from './../dataTypes/interfaces';
 import { RichEmbed, Message } from 'discord.js';
 import { actionColor } from '../config.json';
 import { calcReceivedExp, addPlayerExp } from './exp';
@@ -55,8 +54,11 @@ export async function fight(player: fighter, enemy: fighter, message: Message): 
         if (p1.isPlayer) {
           const receivedExp = calcReceivedExp(p1.lvl, p2.lvl);
           addPlayerExp(message.author, receivedExp);
-          const loot = await addPlayerLoot(message.author);
-          fightLog.addField(`REWARD`, `You received ${receivedExp} EXP \n Loot: ${loot}`);
+          const loot = await addPlayerLoot(player, enemy);
+          fightLog.addField(
+            `REWARD`,
+            `You received ${receivedExp} EXP \n ${loot ? 'Loot: ' + loot : 'You found nothing of worth'}`
+          );
         }
       }
     } else {

@@ -1,3 +1,4 @@
+import { enemy, items, lootList, enemyData } from './../dataTypes/interfaces';
 import { DaoInterface } from './dao';
 import { enemies, enemyType } from '../dataTypes/interfaces';
 
@@ -26,7 +27,7 @@ export class EnemyRepo {
     return this.dao.run(sql);
   }
 
-  add(enemy: enemyType) {
+  add(enemy: enemyData) {
     return this.dao.run(
       `INSERT INTO enemies (
         name,
@@ -67,5 +68,45 @@ export class EnemyRepo {
   deleteAll() {
     console.warn('deleting all races');
     return this.dao.run(`DELETE FROM races`);
+  }
+
+  createLootTable() {
+    const sql = `
+        CREATE TABLE IF NOT EXISTS loot (
+          id INTEGER PRIMARY KEY AUTOINCREMENT,
+          enemyId INTEGER,
+          itemId INTEGER,
+          chance FLOAT,
+          CONSTRAINT inventory_fk_enemyId FOREIGN KEY (enemyId)
+          REFERENCES enemies(id) ON UPDATE CASCADE ON DELETE CASCADE
+          CONSTRAINT inventory_fk_itemId FOREIGN KEY (itemId)
+          REFERENCES item(id) ON UPDATE CASCADE ON DELETE CASCADE
+          )`;
+    return this.dao.run(sql);
+  }
+
+  fillLootTable(enemyId: number, itemId: number, chance: number): Promise<any> {
+    if (chance > 1 || chance < 0) {
+      throw new Error('chance must be between 0 and 1');
+    }
+    return this.dao.run(
+      ` INSERT INTO loot (enemyId, itemId, chance)
+        VALUES (?, ?, ?)`,
+      [enemyId, itemId, chance]
+    );
+  }
+
+  getEnemyLoot(enemyId: number): Promise<lootList> {
+    return this.dao.all(
+      `SELECT
+      L.enemyId,
+      L.itemId,
+      L.chance,
+      I.name AS itemName
+      FROM [loot] L
+      JOIN items I ON L.itemId = I.id
+      WHERE enemyId = ?`,
+      [enemyId]
+    );
   }
 }

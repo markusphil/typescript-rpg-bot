@@ -52,6 +52,7 @@ function createRandomEnemy(baseLvl: number): enemy {
   const lck = enemyType.lck + Math.round(enemyType.lckMultiplier * lvl) + modifier.bonus_lck - modifier.malus_lck;
   const hp = calcHP(dex, str);
   return {
+    id: enemyType.id,
     name: enemyType.name,
     description: enemyType.description,
     modifier: modifier.name,
