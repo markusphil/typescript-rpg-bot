@@ -1,3 +1,4 @@
+import { inventoryInfo } from './inventoryInfo';
 import { enemiesInfo, singleEnemyInfo } from './enemyInfo';
 import { modifierInfo } from './modifierInfo';
 import { playerInfo, activePlayerInfo } from './playerInfo';
@@ -43,6 +44,12 @@ export const infos: Array<command> = [
     aliases: ['me', 'stats'],
     description: 'displays your current stats',
     execute: activePlayerInfo,
+  },
+  {
+    name: 'inventory',
+    aliases: ['myitems', 'mystuff'],
+    description: 'displays your current inventory',
+    execute: inventoryInfo,
   },
   {
     name: 'enemies',

@@ -1,5 +1,5 @@
 import { DaoInterface } from './dao';
-import { item, items } from '../dataTypes/interfaces';
+import { itemData, item, items } from '../dataTypes/interfaces';
 
 export class ItemRepo {
   dao: DaoInterface;
@@ -20,7 +20,7 @@ export class ItemRepo {
     return this.dao.run(sql);
   }
 
-  add(item: item) {
+  add(item: itemData) {
     return this.dao.run(
       `INSERT INTO items (
         name,

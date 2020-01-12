@@ -1,4 +1,4 @@
-import { player, players } from './../dataTypes/interfaces';
+import { player, players, items } from './../dataTypes/interfaces';
 import { DaoInterface } from './dao';
 
 export class PlayerRepo {
@@ -155,8 +155,40 @@ export class PlayerRepo {
     return this.dao.run(
       `
         DELETE FROM inventory
-        WHERE playerId = ? AND itemId = ?)
+        WHERE playerId = ? AND itemId = ?
         VALUES (?, ?)`,
+      [playerId, itemId]
+    );
+  }
+
+  getPlayerInventory(playerId: number): Promise<items> {
+    return this.dao.all(
+      ` SELECT
+        X.itemId as id,
+        I.name,
+        I.description,
+        I.type,
+        I.value
+        FROM [inventory] X
+        JOIN items I ON X.itemId = I.id
+        WHERE playerId = ?`,
+      [playerId]
+    );
+  }
+
+  getPlayerItem(playerId: number, itemId: number): Promise<items> {
+    return this.dao.all(
+      `
+        SELECT
+        X.itemId as id,
+        I.name,
+        I.description,
+        I.type,
+        I.value
+        FROM [inventory] X
+        JOIN items I ON X.itemId = I.id
+        WHERE playerId = ? AND itemId = ?
+      `,
       [playerId, itemId]
     );
   }

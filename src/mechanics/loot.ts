@@ -11,7 +11,7 @@ export async function addPlayerLoot(player: fighter, enemy: fighter): Promise<st
   // calculate chances
   let receivedLoot: lootList = [];
   lootArray.forEach(lo => {
-    if (lo.chance < Math.random()) {
+    if (1 - lo.chance > Math.random()) {
       receivedLoot.push(lo);
     }
   });

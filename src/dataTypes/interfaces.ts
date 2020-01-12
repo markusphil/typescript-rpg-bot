@@ -105,14 +105,33 @@ export interface race {
   base_lck: number;
 }
 
-export interface items extends Array<item> {}
-
-export interface item {
-  id?: number;
+// type for itemData filling the DB
+export interface itemData {
   name: string;
   description: string;
   value: number;
   type: string;
+}
+
+export interface items extends Array<item> {}
+
+export interface item {
+  id: number;
+  name: string;
+  description: string;
+  value: number;
+  type: string;
+}
+
+export interface inventoryItems extends Array<inventoryItem> {}
+
+export interface inventoryItem {
+  id: number;
+  name: string;
+  description: string;
+  value: number;
+  type: string;
+  amount: number;
 }
 
 export interface lootList extends Array<loot> {}
