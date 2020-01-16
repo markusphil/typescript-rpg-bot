@@ -1,3 +1,4 @@
+import { handleSaleRequest } from './trade';
 import { improveAttributes } from './attributes';
 import { joinByCommand } from './account';
 import { command } from '../../dataTypes/interfaces';
@@ -23,5 +24,12 @@ export const actions: Array<command> = [
     usage: '<?str> <?dex> <?int> <?lck>',
     description: 'use your AP to increase attributes',
     execute: improveAttributes,
+  },
+  {
+    name: 'sell',
+    usage: '<"all" or "loot"> or <?itemName>',
+    description: `Sell items from your inventory.
+    (type "all" to sell all items / "loot" for all items of type loot / or a list of specific items)`,
+    execute: handleSaleRequest,
   },
 ];

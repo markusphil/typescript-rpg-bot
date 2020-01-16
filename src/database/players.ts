@@ -130,7 +130,7 @@ export class PlayerRepo {
     return this.dao.run(
       `
     UPDATE players
-      SET coins = ?,
+      SET coins = ?
       WHERE id = ?
     `,
       [newCoinCount, playerId]
@@ -170,7 +170,7 @@ export class PlayerRepo {
       `
         DELETE FROM inventory
         WHERE playerId = ? AND itemId = ?
-        VALUES (?, ?)`,
+      `,
       [playerId, itemId]
     );
   }

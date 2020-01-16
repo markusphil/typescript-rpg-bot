@@ -1,17 +1,17 @@
 import { sendError } from './../../utility/error';
 import { RichEmbed, Message } from 'discord.js';
-import { actionColor, successColor } from '../../config.json';
+import { successColor } from '../../config.json';
 
 import { getPlayer } from '../../utility/playerUtility';
 import { commandExecute, inventoryItems, player } from './../../dataTypes/interfaces';
 import { getPlayersInventory, sellItemAll } from '../../mechanics/inventory';
 
-export const goHunting: commandExecute = async (args, message) => {
+export const handleSaleRequest: commandExecute = async (args, message) => {
   const player = getPlayer(message.author);
   const playerInventory = await getPlayersInventory(player.id);
 
   if (!playerInventory.length) {
-    sendError('There are no items in your inevntory', message);
+    sendError('There are no items in your inventory', message);
     return;
   }
 
@@ -28,9 +28,12 @@ export const goHunting: commandExecute = async (args, message) => {
       case 'all':
         response = sellAllInventory(player, playerInventory);
         break;
+      default:
+        response = await sellItemIfExists(args[0], message, player, playerInventory);
     }
   } else {
     args.forEach(itmName => {
+      console.log(itmName);
       sellItemIfExists(itmName, message, player, playerInventory).then(emb => (response = emb));
     });
   }
