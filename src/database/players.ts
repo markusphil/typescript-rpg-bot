@@ -22,6 +22,7 @@ export class PlayerRepo {
           exp INTEGER,
           lvl INTEGER,
           ap INTEGER,
+          coins INTEGER,
           CONSTRAINT player_fk_raceId FOREIGN KEY (raceId)
           REFERENCES race(id) ON UPDATE CASCADE ON DELETE CASCADE
           CONSTRAINT player_fk_modId FOREIGN KEY (modId)
@@ -35,15 +36,15 @@ export class PlayerRepo {
     // add calculation for attributes based on race an modifiers
     return this.dao.run(
       `
-    INSERT OR IGNORE INTO players (name, discordId, raceId, modId, exp, lvl, ap, str, dex , int, lck)
-    SELECT ? , ? , ? , ? , ? , ? , ? ,
+    INSERT OR IGNORE INTO players (name, discordId, raceId, modId, exp, lvl, ap, coins, str, dex , int, lck)
+    SELECT ? , ? , ? , ? , ? , ? , ? , ? ,
       R.base_str + M.bonus_str - M.malus_str AS str,
       R.base_dex + M.bonus_dex - M.malus_dex AS dex,
       R.base_int + M.bonus_int - M.malus_int AS int,
       R.base_lck + M.bonus_lck - M.malus_lck AS lck
     FROM [races] R , [modifiers] M
       WHERE R.id = ? AND M.id = ?`,
-      [name, discordId, raceId, modId, 0, 1, 0, raceId, modId]
+      [name, discordId, raceId, modId, 0, 1, 0, 0, raceId, modId]
     );
   }
 
@@ -62,6 +63,7 @@ export class PlayerRepo {
       P.exp,
       P.lvl,
       P.ap,
+      P.coins,
       R.name_s AS race,
       M.name AS modifier
       FROM [players] P
@@ -84,6 +86,7 @@ export class PlayerRepo {
       P.exp,
       P.lvl,
       P.ap,
+      P.coins,
       R.name_s AS race,
       M.name AS modifier
       FROM[players] P
@@ -120,6 +123,17 @@ export class PlayerRepo {
       WHERE id = ?
     `,
       [str, dex, int, lck, ap, playerId]
+    );
+  }
+
+  setGold(newCoinCount: number, playerId: number) {
+    return this.dao.run(
+      `
+    UPDATE players
+      SET coins = ?,
+      WHERE id = ?
+    `,
+      [newCoinCount, playerId]
     );
   }
 
