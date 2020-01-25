@@ -1,5 +1,6 @@
 [
   {
+    "id": 1,
     "name": "Boar",
     "description": "Take care for it's tusks!",
     "str": 3,
@@ -22,6 +23,7 @@
     ]
   },
   {
+    "id": 2,
     "name": "Fox",
     "description": "It's smart and fast",
     "str": 1,

@@ -1,14 +1,23 @@
 [
   {
+    "id": 1,
     "name": "fur",
     "description": "A piece of animal fur",
     "value": 5,
     "type": "loot"
   },
   {
+    "id": 2,
     "name": "tusk",
     "description": "An impressive tusk",
     "value": 15,
+    "type": "loot"
+  },
+  {
+    "id": 3,
+    "name": "fang",
+    "description": "A majestic fang",
+    "value": 20,
     "type": "loot"
   }
 ]

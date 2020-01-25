@@ -53,6 +53,7 @@ export async function fight(player: fighter, enemy: fighter, message: Message): 
         fightLog.addField(`${p1.name} is victorious`, `${p2.name} lost`);
         if (p1.isPlayer) {
           const receivedExp = calcReceivedExp(p1.lvl, p2.lvl);
+          // add error handling!
           addPlayerExp(message.author, receivedExp);
           const loot = await addPlayerLoot(player, enemy);
           fightLog.addField(

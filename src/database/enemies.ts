@@ -12,7 +12,7 @@ export class EnemyRepo {
   createTable() {
     const sql = `
         CREATE TABLE IF NOT EXISTS enemies (
-          id INTEGER PRIMARY KEY AUTOINCREMENT,
+          id INTEGER PRIMARY KEY,
           name TEXT,
           description TEXT,
           str INTEGER,
@@ -27,9 +27,10 @@ export class EnemyRepo {
     return this.dao.run(sql);
   }
 
-  add(enemy: enemyData) {
+  add(enemy: enemyType) {
     return this.dao.run(
       `INSERT INTO enemies (
+        id,
         name,
         description,
         str,
@@ -41,8 +42,9 @@ export class EnemyRepo {
         intMultiplier,
         lckMultiplier
          )
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
       [
+        enemy.id,
         enemy.name,
         enemy.description,
         enemy.str,

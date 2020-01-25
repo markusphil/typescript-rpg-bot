@@ -1,5 +1,7 @@
 import { DaoInterface } from './dao';
-import { itemData, item, items } from '../dataTypes/interfaces';
+import { item, items } from '../dataTypes/interfaces';
+
+// TODO: define ids in json data to have control over them!
 
 export class ItemRepo {
   dao: DaoInterface;
@@ -10,7 +12,7 @@ export class ItemRepo {
   createTable() {
     const sql = `
         CREATE TABLE IF NOT EXISTS items (
-          id INTEGER PRIMARY KEY AUTOINCREMENT,
+          id INTEGER PRIMARY KEY,
           name TEXT,
           description TEXT,
           value INTEGER,
@@ -20,16 +22,17 @@ export class ItemRepo {
     return this.dao.run(sql);
   }
 
-  add(item: itemData) {
+  add(item: item) {
     return this.dao.run(
       `INSERT INTO items (
+        id,
         name,
         description,
         value,
         type
          )
-      VALUES (?, ?, ?, ?)`,
-      [item.name, item.description, item.value, item.type]
+      VALUES (?, ?, ?, ?, ?)`,
+      [item.id, item.name, item.description, item.value, item.type]
     );
   }
 
