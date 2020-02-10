@@ -105,6 +105,11 @@ export interface item {
   type: string;
 }
 
+export interface weapon extends item {
+  weaponType: string;
+  baseDMG: number;
+}
+
 export interface inventoryItems extends Array<inventoryItem> {}
 
 export interface inventoryItem {

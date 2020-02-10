@@ -19,5 +19,23 @@
     "description": "A majestic fang",
     "value": 20,
     "type": "loot"
+  },
+  {
+    "id": 4,
+    "name": "starter bow",
+    "description": "A almost useless bow",
+    "value": 0,
+    "type": "weapon",
+    "weaponType": "ranged",
+    "baseDMG": 4
+  },
+  {
+    "id": 5,
+    "name": "starter sword",
+    "description": "A almost useless sword",
+    "value": 0,
+    "type": "weapon",
+    "weaponType": "meele",
+    "baseDMG": 5
   }
 ]

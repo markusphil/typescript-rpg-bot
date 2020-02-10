@@ -1,7 +1,6 @@
+import { isWeapon } from './../dataTypes/typeGuards';
 import { DaoInterface } from './dao';
 import { item, items } from '../dataTypes/interfaces';
-
-// TODO: define ids in json data to have control over them!
 
 export class ItemRepo {
   dao: DaoInterface;
@@ -22,8 +21,23 @@ export class ItemRepo {
     return this.dao.run(sql);
   }
 
+  createWeaponTable() {
+    const sql = `
+        CREATE TABLE IF NOT EXISTS weapons (
+          id INTEGER PRIMARY KEY,
+          itemId INTEGER,
+          weaponType STRING,
+          baseDMG INTEGER,
+          CONSTRAINT weapons_fk_item FOREIGN KEY (itemId)
+          REFERENCES item(id) ON UPDATE CASCADE ON DELETE CASCADE
+          )`;
+
+    return this.dao.run(sql);
+  }
+
   add(item: item) {
-    return this.dao.run(
+    // add item data
+    this.dao.run(
       `INSERT INTO items (
         id,
         name,
@@ -34,6 +48,18 @@ export class ItemRepo {
       VALUES (?, ?, ?, ?, ?)`,
       [item.id, item.name, item.description, item.value, item.type]
     );
+    if (isWeapon(item)) {
+      // typeguard to make sure weapon data exists
+      this.dao.run(
+        `INSERT INTO weapons (
+        itemId,
+        weaponType,
+        baseDMG
+         )
+      VALUES (?, ?, ?)`,
+        [item.id, item.weaponType, item.baseDMG]
+      );
+    }
   }
 
   getById(id: number): Promise<item> {

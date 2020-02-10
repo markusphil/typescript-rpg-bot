@@ -125,6 +125,9 @@ function setup() {
     items
       .createTable()
       .then(() => {
+        return items.createWeaponTable();
+      })
+      .then(() => {
         return Promise.all(
           itemData.map(item => {
             return items.add(item);
