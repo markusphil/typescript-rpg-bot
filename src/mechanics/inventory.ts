@@ -4,7 +4,6 @@ import { inventoryItems, inventoryItem } from '../dataTypes/interfaces';
 
 export async function getPlayersInventory(playerId: number): Promise<inventoryItems> {
   const itemList = await bot.playerRepo.getPlayerInventory(playerId);
-  console.log(itemList);
   // count duplicates
   let itemIds: number[] = [];
   let inventoryItemList: inventoryItems = [];

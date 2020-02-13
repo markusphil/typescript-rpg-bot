@@ -1,3 +1,4 @@
+import { getStarterWeapon } from './startEquipment';
 import { handleSaleRequest } from './trade';
 import { improveAttributes } from './attributes';
 import { joinByCommand } from './account';
@@ -31,5 +32,12 @@ export const actions: Array<command> = [
     description: `Sell items from your inventory.
     (type "all" to sell all items / "loot" for all items of type loot / or a list of specific items)`,
     execute: handleSaleRequest,
+  },
+  {
+    name: 'starterweapon',
+    aliases: ['staters', 'sw'],
+    usage: '<"bow" or "sword">',
+    description: 'choose and receive your starting weapon!',
+    execute: getStarterWeapon,
   },
 ];

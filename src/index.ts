@@ -1,3 +1,4 @@
+import { ItemRepo } from './database/items';
 import { EnemyRepo } from './database/enemies';
 import { sendError } from './utility/error';
 import { addPlayer } from './commands/actions/account';
@@ -34,6 +35,7 @@ export class Bot {
   playerRepo = new PlayerRepo(dao);
   modifierRepo = new ModifierRepo(dao);
   enemyRepo = new EnemyRepo(dao);
+  itemRepo = new ItemRepo(dao);
 
   constructor() {
     this.client = new Client();

@@ -7,7 +7,7 @@ export const sendError = (description: string, message?: Message) => {
     .setTitle('Error')
     .setDescription(description);
   if (message) {
-    message.reply(embed);
+    message.author.send(embed);
   } else {
     bot.logChannel.send(embed);
   }
