@@ -1,4 +1,4 @@
-import { items, enemies } from './../dataTypes/interfaces';
+import { items, enemies, players } from './../dataTypes/interfaces';
 import { ItemRepo } from './items';
 import { AppDAO } from './dao';
 import { RaceRepo } from './races';
@@ -13,6 +13,7 @@ import itemData from './itemData.json';
 
 import { unlinkSync } from 'fs';
 import { resolve } from 'dns';
+import { isValidItemType, hasValidItemType } from '../dataTypes/typeGuards';
 // TODO: setup Modifiers
 function setup() {
   try {
@@ -62,10 +63,15 @@ function setup() {
       .createTable()
       .then(() => {
         console.log('created player Table');
-        players.createInventory().then(() => {
-          console.log('created inventory table');
-          resolve();
-        });
+        return players.createInventory();
+      })
+      .then(() => {
+        console.log('created inventory table');
+        return players.createPlayerWeapon();
+      })
+      .then(() => {
+        console.log('created player weapon Table');
+        resolve();
       })
       .catch(err => {
         reject(err);
@@ -125,11 +131,17 @@ function setup() {
     items
       .createTable()
       .then(() => {
+        console.log('created ItemTable');
         return items.createWeaponTable();
       })
       .then(() => {
+        console.log('created Weapontable');
         return Promise.all(
           itemData.map(item => {
+            if (!hasValidItemType(item)) {
+              throw Error(item.type + ' is no valid itemType!');
+            }
+            // check type!
             return items.add(item);
           })
         );

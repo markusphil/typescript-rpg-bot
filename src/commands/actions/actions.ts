@@ -1,3 +1,4 @@
+import { equipWeaponfromInventory } from './equipment';
 import { getStarterWeapon } from './startEquipment';
 import { handleSaleRequest } from './trade';
 import { improveAttributes } from './attributes';
@@ -39,5 +40,12 @@ export const actions: Array<command> = [
     usage: '<"bow" or "sword">',
     description: 'choose and receive your starting weapon!',
     execute: getStarterWeapon,
+  },
+  {
+    name: 'equip',
+    aliases: ['useweapon'],
+    usage: '<weaponName>',
+    description: 'equip a weapon from your inventory',
+    execute: equipWeaponfromInventory,
   },
 ];

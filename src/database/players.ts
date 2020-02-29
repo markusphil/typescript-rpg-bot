@@ -1,4 +1,4 @@
-import { player, players, items } from './../dataTypes/interfaces';
+import { player, players, items, weapon } from './../dataTypes/interfaces';
 import { DaoInterface } from './dao';
 
 export class PlayerRepo {
@@ -141,6 +141,7 @@ export class PlayerRepo {
     return this.dao.run(`DELETE FROM players`);
   }
 
+  // Player Inventory
   createInventory() {
     const sql = `
         CREATE TABLE IF NOT EXISTS inventory (
@@ -184,6 +185,7 @@ export class PlayerRepo {
         I.value
         FROM [inventory] X
         JOIN items I ON X.itemId = I.id
+        JOIN weapons
         WHERE playerId = ?`,
       [playerId]
     );
@@ -203,6 +205,58 @@ export class PlayerRepo {
         WHERE playerId = ? AND itemId = ?
       `,
       [playerId, itemId]
+    );
+  }
+
+  // player Weapon
+  createPlayerWeapon() {
+    const sql = `
+        CREATE TABLE IF NOT EXISTS playerweapon (
+          id INTEGER PRIMARY KEY AUTOINCREMENT,
+          playerId INTEGER,
+          itemId INTEGER,
+          CONSTRAINT playerweapon_fk_playerId FOREIGN KEY (playerId)
+          REFERENCES player(id) ON UPDATE CASCADE ON DELETE CASCADE
+          CONSTRAINT playerweapon_fk_itemId FOREIGN KEY (itemId)
+          REFERENCES item(id) ON UPDATE CASCADE ON DELETE CASCADE
+          )`;
+    return this.dao.run(sql);
+  }
+
+  playerWeaponAdd(playerId: number, itemId: number) {
+    return this.dao.run(
+      `
+        INSERT INTO playerweapon (playerId, itemId)
+        VALUES (?, ?)`,
+      [playerId, itemId]
+    );
+  }
+
+  playerWeaponRemove(playerId: number, itemId: number) {
+    return this.dao.run(
+      `
+        DELETE FROM playerweapon
+        WHERE playerId = ? AND itemId = ?
+      `,
+      [playerId, itemId]
+    );
+  }
+
+  getPlayerWeapon(playerId: number): Promise<weapon> {
+    return this.dao.get(
+      ` SELECT
+        X.itemId as id,
+        I.name,
+        I.description,
+        I.type,
+        I.value,
+        W.weaponType,
+        W.baseDMG
+        FROM [playerweapon] X
+        JOIN items I ON X.itemId = I.id
+        JOIN weapons W ON X.itemId = W.itemId
+        WHERE playerId = ?`,
+      [playerId]
     );
   }
 }

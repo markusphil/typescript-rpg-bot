@@ -92,7 +92,9 @@ export interface itemData {
   name: string;
   description: string;
   value: number;
-  type: string;
+  type: itemType;
+  weaponType?: weaponType;
+  baseDMG?: number;
 }
 
 export interface items extends Array<item> {}
@@ -102,22 +104,19 @@ export interface item {
   name: string;
   description: string;
   value: number;
-  type: string;
+  type: itemType;
+  weaponType?: weaponType;
+  baseDMG?: number;
 }
 
 export interface weapon extends item {
-  weaponType: string;
+  weaponType: weaponType;
   baseDMG: number;
 }
 
 export interface inventoryItems extends Array<inventoryItem> {}
 
-export interface inventoryItem {
-  id: number;
-  name: string;
-  description: string;
-  value: number;
-  type: string;
+export interface inventoryItem extends item {
   amount: number;
 }
 

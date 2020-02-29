@@ -14,6 +14,7 @@ export const getStarterWeapon: commandExecute = async (args, message) => {
   try {
     const player = getPlayer(message.author);
     const inventory = await getPlayersInventory(player.id);
+    // TODO: check if player has a starterWeapon equiped!
 
     if (inventory.some(itm => itm.id === 4 || itm.id === 5)) {
       sendError('You only can have one starter Weapon', message);

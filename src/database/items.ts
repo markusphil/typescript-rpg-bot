@@ -66,6 +66,10 @@ export class ItemRepo {
     return this.dao.get(`SELECT * FROM items WHERE id = ?`, [id]);
   }
 
+  getByName(name: string): Promise<item> {
+    return this.dao.get(`SELECT * FROM items WHERE name = ?`, [name]);
+  }
+
   getAll(): Promise<items> {
     return this.dao.all(`SELECT * FROM items`);
   }
