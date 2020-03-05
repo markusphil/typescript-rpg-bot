@@ -1,16 +1,23 @@
+import { weapon } from './../../dataTypes/interfaces';
 import { sendError } from '../../utility/error';
 import { RichEmbed } from 'discord.js';
 import { bot } from '../..';
 import { actionColor } from '../../config.json';
 
-import { getPlayer } from '../../utility/playerUtility';
+import { getPlayer, getPlayerWeapon } from '../../utility/playerUtility';
 import { fight } from '../../mechanics/fight';
 import { fighter, enemy, commandExecute } from '../../dataTypes/interfaces';
 
 export const goHunting: commandExecute = async (args, message) => {
   try {
     const player = getPlayer(message.author);
-    const fightingPlayer: fighter = { ...player, hp: calcHP(player.dex, player.str), isPlayer: true };
+    const playerWeapon = await getPlayerWeapon(player.id);
+    const fightingPlayer: fighter = {
+      ...player,
+      hp: calcHP(player.dex, player.str),
+      weapon: playerWeapon,
+      isPlayer: true,
+    };
     const enemy = createRandomEnemy(player.lvl);
 
     const embed = new RichEmbed().setColor(actionColor);
@@ -62,11 +69,13 @@ function createRandomEnemy(baseLvl: number): enemy {
     int: int,
     lck: lck,
     hp: hp,
+    weapon: undefined,
     isPlayer: false,
   };
 }
 
-// placeholder for HP calculation => TODO: playerHP should be stored in DB
+// placeholder for HP calculation =>
+// TODO: playerHP should be stored in DB
 function calcHP(dex: number, str: number): number {
   return dex * 4 + str * 10;
 }

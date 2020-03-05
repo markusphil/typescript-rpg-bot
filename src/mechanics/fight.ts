@@ -1,4 +1,4 @@
-import { fighter, enemy } from './../dataTypes/interfaces';
+import { fighter, enemy, player } from './../dataTypes/interfaces';
 import { RichEmbed, Message } from 'discord.js';
 import { actionColor } from '../config.json';
 import { calcReceivedExp, addPlayerExp } from './exp';
@@ -11,14 +11,70 @@ function doesPlayerStart(player: fighter, enemy: fighter): Boolean {
   return pInit > eInit;
 }
 
+function hasAdvantageHit(player: fighter, enemy: fighter): advantageHitType {
+  if (
+    player.weapon &&
+    player.weapon.weaponType === 'ranged' &&
+    (!enemy.weapon || enemy.weapon.weaponType === 'meele')
+  ) {
+    return 'player';
+  } else if (
+    enemy.weapon &&
+    enemy.weapon.weaponType === 'ranged' &&
+    (!player.weapon || player.weapon.weaponType === 'meele')
+  ) {
+    return 'enemy';
+  } else {
+    return 'none';
+  }
+}
+
+function calculateHit(attacker: fighter, defender: fighter, fightLog: RichEmbed, isAdvantageHit: Boolean) {
+  // check for hit:
+  // calc hit and dodge change
+  const hitChance = (attacker.dex + attacker.int * 0.5) / 10;
+  const dodeChance = defender.dex / 10;
+  const calcHitChance = hitChance - dodeChance;
+  if (Math.random() * 1.05 * attacker.lck > 1 - calcHitChance) {
+    // check for damage
+    // placeholder calculation
+    // TODO: create a real calculation using wapon, armor, etc
+    const dmg = Math.round(
+      attacker.str * (attacker.weapon && attacker.weapon.baseDMG ? attacker.weapon.baseDMG / 5 : 1) +
+        0.4 * attacker.dex +
+        0.7 * attacker.int -
+        (0.4 * defender.dex + 0.2 * defender.str)
+    );
+    defender.hp -= dmg;
+    fightLog.addField(
+      isAdvantageHit ? 'Advantage Hit for: ' + attacker.name : attacker.name + ' attacks',
+      `...and hits for ${dmg} Damage.\n ${defender.name} has ${defender.hp} HP remaining.`
+    );
+  } else {
+    fightLog.addField(attacker.name + 'attacks', "...and doesn't hit!");
+  }
+}
+
 export async function fight(player: fighter, enemy: fighter, message: Message): Promise<RichEmbed> {
   // prepare fightLog
   let fightLog = new RichEmbed().setColor(actionColor).setTitle('FIGHT LOG');
-  // determine first hit
-  // TODO add check for ranged and meele attack
+
   let p1: fighter = player;
   let p2: fighter = enemy;
 
+  // check advantage hit
+  switch (hasAdvantageHit(player, enemy)) {
+    case 'player':
+      calculateHit(p1, p2, fightLog, true);
+      break;
+    case 'enemy':
+      calculateHit(p2, p1, fightLog, true);
+      break;
+    case 'none':
+      break;
+  }
+
+  // determine first hit
   if (!doesPlayerStart(player, enemy)) {
     p1 = enemy;
     p2 = player;
@@ -35,36 +91,21 @@ export async function fight(player: fighter, enemy: fighter, message: Message): 
       message.author.send(fightLog);
       fightLog = new RichEmbed().setColor(actionColor).setTitle('FIGHT LOG');
     }
-
-    // check for hit:
-    // calc hit and dodge change
-    // TODO: make calculation depending on enemy lvl
-    const hitChance = (p1.dex + p1.int * 0.5) / 10;
-    const dodeChance = p2.dex / 10;
-    const calcHitChance = hitChance - dodeChance;
-    if (Math.random() * 1.05 * p1.lck > 1 - calcHitChance) {
-      // check for damage
-      // placeholder calculation
-      const dmg = Math.round(p1.str + 0.4 * p1.dex + 0.7 * p1.int - (0.4 * p2.dex + 0.2 * p2.str));
-      p2.hp -= dmg;
-      fightLog.addField(p1.name + ' attacks', `...and hits for ${dmg} Damage.\n ${p2.name} has ${p2.hp} HP remaining.`);
-      // TODO: create a real calculation using wapon, armor, etc
-      if (p2.hp <= 0) {
-        fightLog.addField(`${p1.name} is victorious`, `${p2.name} lost`);
-        if (p1.isPlayer) {
-          const receivedExp = calcReceivedExp(p1.lvl, p2.lvl);
-          // add error handling!
-          addPlayerExp(message.author, receivedExp);
-          const loot = await addPlayerLoot(player, enemy);
-          fightLog.addField(
-            `REWARD`,
-            `You received ${receivedExp} EXP \n ${loot ? 'Loot: ' + loot : 'You found nothing of worth'}`
-          );
-        }
+    calculateHit(p1, p2, fightLog, false);
+    if (p2.hp <= 0) {
+      fightLog.addField(`${p1.name} is victorious`, `${p2.name} lost`);
+      if (p1.isPlayer) {
+        const receivedExp = calcReceivedExp(p1.lvl, p2.lvl);
+        // TODO: add error handling!
+        addPlayerExp(message.author, receivedExp);
+        const loot = await addPlayerLoot(player, enemy);
+        fightLog.addField(
+          `REWARD`,
+          `You received ${receivedExp} EXP \n ${loot ? 'Loot: ' + loot : 'You found nothing of worth'}`
+        );
       }
-    } else {
-      fightLog.addField(p1.name + 'attacks', "...and doesn't hit!");
     }
+
     // swap players
     const buffer = p1;
     p1 = p2;

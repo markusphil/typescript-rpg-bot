@@ -54,6 +54,7 @@ export interface fighter {
   lck: number;
   lvl: number;
   hp: number;
+  weapon: weapon | undefined;
   isPlayer: boolean;
 }
 
