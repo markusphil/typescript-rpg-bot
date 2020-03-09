@@ -1,3 +1,4 @@
+import { equipmentInfo } from './equipmentInfo';
 import { inventoryInfo } from './inventoryInfo';
 import { enemiesInfo, singleEnemyInfo } from './enemyInfo';
 import { modifierInfo } from './modifierInfo';
@@ -50,6 +51,12 @@ export const infos: Array<command> = [
     aliases: ['myitems', 'mystuff'],
     description: 'displays your current inventory',
     execute: inventoryInfo,
+  },
+  {
+    name: 'equipment',
+    aliases: ['myequipment', 'eqmt'],
+    description: 'displays your current equipment',
+    execute: equipmentInfo,
   },
   {
     name: 'enemies',

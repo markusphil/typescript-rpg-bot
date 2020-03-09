@@ -48,8 +48,12 @@ function calculateHit(attacker: fighter, defender: fighter, fightLog: RichEmbed,
     defender.hp -= dmg;
     fightLog.addField(
       isAdvantageHit ? 'Advantage Hit for: ' + attacker.name : attacker.name + ' attacks',
-      `...and hits for ${dmg} Damage.\n ${defender.name} has ${defender.hp} HP remaining.`
+      `...and hits ${attacker.weapon ? 'with ' + attacker.weapon.name : ''} for ${dmg} Damage.\n ${defender.name} has ${
+        defender.hp
+      } HP remaining.`
     );
+  } else if (isAdvantageHit) {
+    fightLog.addField('Advantage Hit for: ' + attacker.name, "...and doesn't hit!");
   } else {
     fightLog.addField(attacker.name + 'attacks', "...and doesn't hit!");
   }
