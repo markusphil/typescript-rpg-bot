@@ -1,7 +1,7 @@
 import { ItemRepo } from './database/items';
 import { EnemyRepo } from './database/enemies';
 import { sendError } from './utility/error';
-import { addPlayer } from './commands/actions/account';
+import { addPlayer } from './commands/actions/player/account';
 import { actions } from './commands/actions/actions';
 import { infos } from './commands/infos/infos';
 import * as dotenv from 'dotenv';

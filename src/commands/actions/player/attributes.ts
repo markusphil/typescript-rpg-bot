@@ -1,9 +1,10 @@
-import { sendError } from '../../utility/error';
-import { bot } from '../../index';
-import { successColor } from '../../config.json';
+// Handles attribute Selection after lvl UP
+import { sendError } from '../../../utility/error';
+import { bot } from '../../../index';
+import { successColor } from '../../../config.json';
 import { RichEmbed } from 'discord.js';
-import { getPlayer } from '../../utility/playerUtility';
-import { player, commandExecute } from '../../dataTypes/interfaces';
+import { getPlayer } from '../../../utility/playerUtility';
+import { player, commandExecute } from '../../../dataTypes/interfaces';
 
 export const improveAttributes: commandExecute = (args, message) => {
   console.log('start training');

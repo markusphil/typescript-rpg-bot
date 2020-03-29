@@ -2,7 +2,6 @@ import { RichEmbed } from 'discord.js';
 import { infoColor } from '../../config.json';
 import { commandExecute } from '../../dataTypes/interfaces';
 import { getPlayer, getPlayerWeapon } from '../../utility/playerUtility';
-import { getPlayersInventory } from '../../mechanics/inventory';
 
 export const equipmentInfo: commandExecute = async (args, message) => {
   let embed = new RichEmbed().setColor(infoColor).setTitle('Your Equipment:');

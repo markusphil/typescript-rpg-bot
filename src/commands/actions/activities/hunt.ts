@@ -1,12 +1,12 @@
-import { weapon } from './../../dataTypes/interfaces';
-import { sendError } from '../../utility/error';
+import { weapon } from '../../../dataTypes/interfaces';
+import { sendError } from '../../../utility/error';
 import { RichEmbed } from 'discord.js';
-import { bot } from '../..';
-import { actionColor } from '../../config.json';
+import { bot } from '../../..';
+import { actionColor } from '../../../config.json';
 
-import { getPlayer, getPlayerWeapon } from '../../utility/playerUtility';
-import { fight } from '../../mechanics/fight';
-import { fighter, enemy, commandExecute } from '../../dataTypes/interfaces';
+import { getPlayer, getPlayerWeapon } from '../../../utility/playerUtility';
+import { fight } from '../../../mechanics/fight';
+import { fighter, enemy, commandExecute } from '../../../dataTypes/interfaces';
 
 export const goHunting: commandExecute = async (args, message) => {
   try {

@@ -1,10 +1,10 @@
-import { sendError } from './../../utility/error';
+import { sendError } from '../../../utility/error';
 import { RichEmbed, Message } from 'discord.js';
-import { successColor } from '../../config.json';
+import { successColor } from '../../../config.json';
 
-import { getPlayer } from '../../utility/playerUtility';
-import { commandExecute, inventoryItems, player } from './../../dataTypes/interfaces';
-import { getPlayersInventory, sellItemAll } from '../../mechanics/inventory';
+import { getPlayer } from '../../../utility/playerUtility';
+import { commandExecute, inventoryItems, player } from '../../../dataTypes/interfaces';
+import { getPlayersInventory, sellItemAll } from '../../../mechanics/inventory';
 
 export const handleSaleRequest: commandExecute = async (args, message) => {
   const player = getPlayer(message.author);

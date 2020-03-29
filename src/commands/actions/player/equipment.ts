@@ -1,11 +1,11 @@
-import { commandExecute } from '../../dataTypes/interfaces';
-import { getPlayer } from '../../utility/playerUtility';
-import { sendError } from '../../utility/error';
-import { getPlayersInventory } from '../../mechanics/inventory';
-import { bot } from '../..';
+import { commandExecute } from '../../../dataTypes/interfaces';
+import { getPlayer } from '../../../utility/playerUtility';
+import { sendError } from '../../../utility/error';
+import { getPlayersInventory } from '../../../mechanics/inventory';
+import { bot } from '../../..';
 import { RichEmbed } from 'discord.js';
-import { successColor } from '../../config.json';
-import { equipWeapon } from '../../mechanics/equipment';
+import { successColor } from '../../../config.json';
+import { equipWeapon } from '../../../mechanics/equipment';
 
 export const equipWeaponfromInventory: commandExecute = async (args, message) => {
   // if args contain multiple words, combine them:

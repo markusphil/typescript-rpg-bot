@@ -2,7 +2,6 @@ import { bot } from '..';
 import { fighter, lootList } from '../dataTypes/interfaces';
 
 export async function addPlayerLoot(player: fighter, enemy: fighter): Promise<string> {
-  // placeholder function to test if item table works
   // get loot table from enemy
   const lootArray = await bot.enemyRepo.getEnemyLoot(enemy.id);
   console.log(lootArray);

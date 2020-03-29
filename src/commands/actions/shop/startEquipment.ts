@@ -1,10 +1,10 @@
-import { commandExecute } from '../../dataTypes/interfaces';
-import { getPlayer } from '../../utility/playerUtility';
-import { sendError } from '../../utility/error';
-import { getPlayersInventory } from '../../mechanics/inventory';
-import { bot } from '../..';
+import { commandExecute } from '../../../dataTypes/interfaces';
+import { getPlayer } from '../../../utility/playerUtility';
+import { sendError } from '../../../utility/error';
+import { getPlayersInventory } from '../../../mechanics/inventory';
+import { bot } from '../../..';
 import { User, RichEmbed } from 'discord.js';
-import { successColor } from '../../config.json';
+import { successColor } from '../../../config.json';
 
 export const getStarterWeapon: commandExecute = async (args, message) => {
   if (args.length != 1 || args[0].length < 1) {

@@ -1,10 +1,10 @@
-import { equipWeaponfromInventory } from './equipment';
-import { getStarterWeapon } from './startEquipment';
-import { handleSaleRequest } from './trade';
-import { improveAttributes } from './attributes';
-import { joinByCommand } from './account';
+import { equipWeaponfromInventory } from './player/equipment';
+import { getStarterWeapon } from './shop/startEquipment';
+import { handleSaleRequest } from './shop/sell';
+import { improveAttributes } from './player/attributes';
+import { joinByCommand } from './player/account';
 import { command } from '../../dataTypes/interfaces';
-import { goHunting } from './hunt';
+import { goHunting } from './activities/hunt';
 
 export const actions: Array<command> = [
   {

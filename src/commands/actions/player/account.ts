@@ -1,6 +1,7 @@
-import { bot } from '../../index';
+// handles new player registration
+import { bot } from '../../../index';
 import { GuildMember } from 'discord.js';
-import { commandExecute } from '../../dataTypes/interfaces';
+import { commandExecute } from '../../../dataTypes/interfaces';
 
 export const joinByCommand: commandExecute = (args, message) => {
   addPlayer(message.member);
